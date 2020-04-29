@@ -51,13 +51,13 @@ We can make rules for fixing xml for following cases.
 <elm>&lt; fsdfsdf &gt;</elm>
 ```
 
-## Escape brackets < and > inside of elements when they are surrounded by ".
+## Escape brackets < and > inside of attributes when they are surrounded by ".
 
 ```xml
 <!-- invalid -->
 <elm attr="><"> </elm>
 <!-- valid -->
-<elm>&lt;<fsdfsdf </elm>
+<elm attr="&lt;&gt;"> </elm>
   
 <!-- invalid -->
 <elm>< fsdfsdf ></elm>
@@ -88,6 +88,20 @@ We can make rules for fixing xml for following cases.
 <elm>f>d>s>a></elm>
 <!-- valid -->
 <elm>f&gt;d&gt;s&gt;a&gt;</elm>
+```
+
+## Escape brackets " inside of attributes when they are surrounded by " and after goes a space.
+
+```xml
+<!-- invalid -->
+<elm attr1="asdasd"" attr2="asdasd""> </elm>
+<!-- valid -->
+<elm>&lt;<fsdfsdf </elm>
+  
+<!-- invalid -->
+<elm>< fsdfsdf ></elm>
+<!-- valid -->
+<elm>&lt; fsdfsdf &gt;</elm>
 ```
 
 ## How to parse XML
