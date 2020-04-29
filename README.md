@@ -82,7 +82,7 @@ Very useful stuff: https://gist.github.com/zeux/5346409
 
 ## Example of valid XML
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <breakfast_menu>
   <food>
