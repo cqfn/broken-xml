@@ -76,4 +76,6 @@ We can make rules for fixing xml for following cases.
 <elm>f&gt;d&gt;s&gt;a&gt;</elm>
 ```
 
+## How to parse XML
 
+Very useful stuff: https://gist.github.com/zeux/5346409
