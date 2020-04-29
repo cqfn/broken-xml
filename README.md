@@ -51,6 +51,20 @@ We can make rules for fixing xml for following cases.
 <elm>&lt; fsdfsdf &gt;</elm>
 ```
 
+## Escape brackets < and > inside of elements when they are surrounded by ".
+
+```xml
+<!-- invalid -->
+<elm attr="><"> </elm>
+<!-- valid -->
+<elm>&lt;<fsdfsdf </elm>
+  
+<!-- invalid -->
+<elm>< fsdfsdf ></elm>
+<!-- valid -->
+<elm>&lt; fsdfsdf &gt;</elm>
+```
+
 ## Escape brackets < and > inside of elements when they are part of words with no charaters.
 
 ```xml
