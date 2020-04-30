@@ -6,9 +6,10 @@ import org.junit.Test;
 public class ParsedXmlTest {
 
     @Test
-    public void test() throws IOException {
+    public void test() throws IOException, NoSuchFieldException, IllegalAccessException {
         final ParsedXml xml = new ParsedXml(dataByPath("valid-xml.xml"));
-        System.out.println(xml.value());
+        xml.value();
+
     }
 
     private String dataByPath(final String path) throws IOException {

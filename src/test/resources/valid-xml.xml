@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- comment -->
 <bookstore>
   <book category="COOKING">
-    <title lang="en">Everyday Italian</title>
+    <title lang = "en">Everyday Italian</title>
     <author>Giada De Laurentiis</author>
     <year>2005</year>
     <price>30.00</price>
   </book>
-  <book category="CHILDREN">
+  <book category = 'CHILDREN'>
     <title lang="en">Harry Potter</title>
     <author>J K. Rowling</author>
     <year>2005</year>
