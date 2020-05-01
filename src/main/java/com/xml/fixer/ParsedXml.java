@@ -11,7 +11,7 @@ public final class ParsedXml {
         this.xml = xml;
     }
 
-    public Element value() throws NoSuchFieldException, IllegalAccessException {
+    public XmlDocument value() throws NoSuchFieldException, IllegalAccessException {
 
         final Field field = String.class.getDeclaredField("value");
         field.setAccessible(true);
@@ -43,9 +43,7 @@ public final class ParsedXml {
         StringBuilder curAttrValue = null;
         StringBuilder curText = null;
         StringBuilder curCommentText = null;
-        final Element root = new Element(null, null, 0, len);
-        Element inCurrentElm = root;
-        elements.push(inCurrentElm);
+        final XmlDocument doc = new XmlDocument(0, len);
 
         for (int i = 0; i < len; i++) {
             final char cur = chars[i];
@@ -54,27 +52,26 @@ public final class ParsedXml {
                 continue;
             }
             if (cur == '>') {
-                newElmStarted = false;
                 if (xmlHeadElmStarted) {
+                    newElmStarted = false;
                     xmlHeadElmStarted = false;
-                    root.getXmlHead().setEnd(i);
+                    doc.getHead().setEnd(i);
                     continue;
                 }
                 if (newCommentStarted) {
                     if (curCommentText != null) {
-                        inCurrentElm.addCommnet(new Comment(
-                            newCommentStart,
-                            newCommentEnd,
-                            curCommentText.toString()
-                        ));
+                        doc.addComment(
+                            new Comment(
+                                newCommentStart,
+                                newCommentEnd,
+                                curCommentText.toString()
+                            )
+                        );
                         newCommentStarted = false;
                         curCommentText = null;
                     }
                     continue;
                 }
-            }
-            if (cur == '!') {
-                char curt = '!';
             }
             if (newElmStarted && !newAttrNameStarted && !newAttrValueStarted) {
                 if (cur == '?') {
@@ -83,10 +80,10 @@ public final class ParsedXml {
                         continue;
                     }
                     xmlHeadElmStarted = true;
-                    if (!root.hasXmlHead()) {
+                    if (!doc.hasHead()) {
                         XmlHeadElement head = new XmlHeadElement();
                         head.setStart(i - 1);
-                        root.addXmlHead(head);
+                        doc.addHead(head);
                     }
                     continue;
                 }
@@ -115,6 +112,7 @@ public final class ParsedXml {
                     }
                     continue;
                 }
+
             }
             if (xmlHeadElmStarted &&
                 isXMLChar(cur) &&
@@ -142,7 +140,7 @@ public final class ParsedXml {
                     if (curAttrName == null) {
                         curAttrName = new StringBuilder();
                     }
-                    if (validAttrNameChar(cur)) {
+                    if (isValidAttrNameChar(cur)) {
                         curAttrName.append(cur);
                     } else if (isQuote(cur)) {
                         newAttrValueStarted = true;
@@ -156,7 +154,7 @@ public final class ParsedXml {
                     if (isQuote(cur)) {
                         newAttrValueStarted = false;
                         newAttrValueEnd = i - 1;
-                        root.getXmlHead().addAttribute(
+                        doc.getHead().addAttribute(
                             new Attribute(
                                 curAttrName.toString(),
                                 curAttrValue.toString(),
@@ -175,7 +173,7 @@ public final class ParsedXml {
             }
 
         }
-        return root;
+        return doc;
     }
 
     private boolean isDelimiter(char c) {
@@ -188,7 +186,7 @@ public final class ParsedXml {
         return false;
     }
 
-    private boolean validAttrNameChar(char c) {
+    private boolean isValidAttrNameChar(char c) {
         return Character.isLetterOrDigit(c) || c == '_' || c == '.';
     }
 
