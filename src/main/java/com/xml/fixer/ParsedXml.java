@@ -20,6 +20,7 @@ public final class ParsedXml {
         assert len == xml.length();
 
         final Stack<Element> elements = new Stack<>();
+        Element curElm = null;
         boolean nextCharIsEscaped = false;
 
         boolean xmlHeadElmStarted = false;
@@ -27,6 +28,8 @@ public final class ParsedXml {
         boolean newElmStarted = false;
         long newElmStart = 0;
         long newElmEnd = 0;
+        long newElmNameStart = 0;
+        long newElmNameEnd = 0;
         boolean newAttrNameStarted = false;
         long newAttrNameStart = 0;
         long newAttrNameEnd = 0;
@@ -41,7 +44,7 @@ public final class ParsedXml {
         StringBuilder curElmName = null;
         StringBuilder curAttrName = null;
         StringBuilder curAttrValue = null;
-        StringBuilder curText = null;
+        StringBuilder curElmText = null;
         StringBuilder curCommentText = null;
         final XmlDocument doc = new XmlDocument(0, len);
 
@@ -51,7 +54,7 @@ public final class ParsedXml {
                 newElmStarted = true;
                 continue;
             }
-            if (cur == '>') {
+            if (cur == '>' && !nextCharIsEscaped) {
                 if (xmlHeadElmStarted) {
                     newElmStarted = false;
                     xmlHeadElmStarted = false;
@@ -112,8 +115,17 @@ public final class ParsedXml {
                     }
                     continue;
                 }
-
+                if (isDelimiter(cur)) {
+                    if (xmlHeadElmStarted) {
+                        if (xmlHeadElmNameFinished) {
+                            newAttrNameStarted = true;
+                            newAttrNameStart = i + 1;
+                        }
+                        continue;
+                    }
+                }
             }
+
             if (xmlHeadElmStarted &&
                 isXMLChar(cur) &&
                 !newAttrNameStarted &&
@@ -128,13 +140,6 @@ public final class ParsedXml {
                 }
                 continue;
             }
-
-            if (xmlHeadElmNameFinished && isDelimiter(cur) && !newAttrNameStarted) {
-                newAttrNameStarted = true;
-                newAttrNameStart = i + 1;
-                continue;
-            }
-
             if (xmlHeadElmStarted && xmlHeadElmNameFinished) {
                 if (newAttrNameStarted) {
                     if (curAttrName == null) {
@@ -144,6 +149,7 @@ public final class ParsedXml {
                         curAttrName.append(cur);
                     } else if (isQuote(cur)) {
                         newAttrValueStarted = true;
+                        newAttrNameEnd = i - 1;
                         newAttrValueStart = i + 1;
                         newAttrNameStarted = false;
                     }
@@ -171,7 +177,6 @@ public final class ParsedXml {
                     }
                 }
             }
-
         }
         return doc;
     }

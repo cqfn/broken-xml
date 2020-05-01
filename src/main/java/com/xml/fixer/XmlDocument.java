@@ -8,12 +8,14 @@ public class XmlDocument {
     private long end;
     private final XmlHeadElement[] xmlHead;
     private final List<Comment> comments;
+    private final List<Element> elements;
 
     public XmlDocument(final long start, final long end) {
         this.start = start;
         this.end = end;
         this.xmlHead = new XmlHeadElement[]{ null };
         this.comments = new ArrayList<>();
+        this.elements = new ArrayList<>();
     }
 
     public XmlHeadElement getHead() {
@@ -22,6 +24,10 @@ public class XmlDocument {
 
     public List<Comment> getComments() {
         return this.comments;
+    }
+
+    public List<Element> getElements() {
+        return this.elements;
     }
 
     public boolean hasHead() {
@@ -34,5 +40,9 @@ public class XmlDocument {
 
     void addComment(Comment comment) {
         this.comments.add(comment);
+    }
+
+    void addElement(Element element) {
+        this.elements.add(element);
     }
 }

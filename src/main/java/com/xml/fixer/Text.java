@@ -3,12 +3,12 @@ package com.xml.fixer;
 public class Text {
     private final long start;
     private final long end;
-    private final String text;
+    private final String value;
 
     public Text(final long start, final long end, final String text) {
         this.start = start;
         this.end = end;
-        this.text = text;
+        this.value = text;
     }
 
     public long getStart() {
@@ -19,7 +19,7 @@ public class Text {
         return end;
     }
 
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 }

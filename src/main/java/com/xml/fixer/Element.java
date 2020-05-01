@@ -9,12 +9,12 @@ public final class Element {
     private long end;
     private final List<Attribute> attributes;
     private final List<Element> children;
-    private final String name;
-    private final Text text;
+    private String name;
+    private long nameStart;
+    private long nameEnd;
+    private Text text;
 
-    public Element(final String name, final Text text) {
-        this.name = name;
-        this.text = text;
+    public Element() {
         this.attributes = new ArrayList<>();
         this.children = new ArrayList<>();
     }
@@ -35,11 +35,35 @@ public final class Element {
         return end;
     }
 
+    public long getNameStart() {
+        return nameStart;
+    }
+
+    public long getNameEnd() {
+        return nameEnd;
+    }
+
     void setStart(long start) {
         this.start = start;
     }
 
     void setEnd(long end) {
         this.end = end;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    void setNameStart(final long nameStart) {
+        this.nameStart = nameStart;
+    }
+
+    void setNameEnd(final long nameEnd) {
+        this.nameEnd = nameEnd;
+    }
+
+    void setText(Text text) {
+        this.text = text;
     }
 }
