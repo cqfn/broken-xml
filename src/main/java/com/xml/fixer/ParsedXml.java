@@ -20,6 +20,7 @@ public final class ParsedXml {
         assert len == xml.length();
 
         final Stack<Element> elements = new Stack<>();
+        boolean nextCharIsEscaped = false;
 
         boolean xmlHeadElmStarted = false;
         boolean xmlHeadElmNameFinished = false;
@@ -33,6 +34,9 @@ public final class ParsedXml {
         long newAttrValueStart = 0;
         long newAttrValueEnd = 0;
         boolean newCommentStarted = false;
+        boolean newCommentTextStarted = false;
+        long newCommentStart = 0;
+        long newCommentEnd = 0;
         boolean newTextStarted = false;
         StringBuilder curElmName = null;
         StringBuilder curAttrName = null;
@@ -46,23 +50,74 @@ public final class ParsedXml {
         for (int i = 0; i < len; i++) {
             final char cur = chars[i];
             if (cur == '<') {
-                newElmStarted = !newElmStarted;
+                newElmStarted = true;
                 continue;
             }
-            if (cur == '>' && xmlHeadElmStarted) {
-                xmlHeadElmStarted = false;
-            }
-            if (cur == '?' && newElmStarted && !newAttrNameStarted && !newAttrValueStarted) {
-                xmlHeadElmStarted = true;
-                if (!root.hasXmlHead()) {
-                    XmlHeadElement head = new XmlHeadElement();
-                    head.setStart(i - 4);
-                    root.addXmlHead(head);
+            if (cur == '>') {
+                newElmStarted = false;
+                if (xmlHeadElmStarted) {
+                    xmlHeadElmStarted = false;
+                    root.getXmlHead().setEnd(i);
+                    continue;
                 }
-                continue;
+                if (newCommentStarted) {
+                    if (curCommentText != null) {
+                        inCurrentElm.addCommnet(new Comment(
+                            newCommentStart,
+                            newCommentEnd,
+                            curCommentText.toString()
+                        ));
+                        newCommentStarted = false;
+                        curCommentText = null;
+                    }
+                    continue;
+                }
             }
-            if (isXMLChar(cur) &&
-                xmlHeadElmStarted &&
+            if (cur == '!') {
+                char curt = '!';
+            }
+            if (newElmStarted && !newAttrNameStarted && !newAttrValueStarted) {
+                if (cur == '?') {
+                    if (xmlHeadElmStarted) {
+                        xmlHeadElmNameFinished = false;
+                        continue;
+                    }
+                    xmlHeadElmStarted = true;
+                    if (!root.hasXmlHead()) {
+                        XmlHeadElement head = new XmlHeadElement();
+                        head.setStart(i - 1);
+                        root.addXmlHead(head);
+                    }
+                    continue;
+                }
+                if (cur == '!' && !newCommentStarted) {
+                    newCommentStarted = true;
+                    newCommentStart = i;
+                    continue;
+                }
+                if (cur == '-' && newCommentStarted) {
+                    if (!newCommentTextStarted && i > 1 && chars[i - 1] == '-') {
+                        if (curCommentText == null) {
+                            curCommentText = new StringBuilder();
+                        }
+                        newCommentTextStarted = true;
+                        continue;
+                    }
+                    if (newCommentTextStarted && i > 1 && chars[i + 1] == '>') {
+                        newCommentEnd = i + 1;
+                        newCommentTextStarted = false;
+                        continue;
+                    }
+                }
+                if (newCommentStarted && newCommentTextStarted) {
+                    if (curCommentText != null && isValidCommentText(cur, nextCharIsEscaped)) {
+                        curCommentText.append(cur);
+                    }
+                    continue;
+                }
+            }
+            if (xmlHeadElmStarted &&
+                isXMLChar(cur) &&
                 !newAttrNameStarted &&
                 !newAttrValueStarted) {
                 if (cur == 'x') {
@@ -75,14 +130,10 @@ public final class ParsedXml {
                 }
                 continue;
             }
-            if (xmlHeadElmNameFinished && isDelimiter(cur)) {
-                if (!newAttrNameStarted && !newAttrValueStarted) {
-                    newAttrNameStarted = true;
-                    newAttrNameStart = i + 1;
-                } else if (newAttrNameStarted) {
-                    newAttrNameStarted = false;
-                    newAttrNameEnd = i - 1;
-                }
+
+            if (xmlHeadElmNameFinished && isDelimiter(cur) && !newAttrNameStarted) {
+                newAttrNameStarted = true;
+                newAttrNameStart = i + 1;
                 continue;
             }
 
@@ -115,8 +166,8 @@ public final class ParsedXml {
                                 newAttrValueEnd
                             )
                         );
-                        curAttrName = new StringBuilder();
-                        curAttrValue = new StringBuilder();
+                        curAttrName = null;
+                        curAttrValue = null;
                     } else {
                         curAttrValue.append(cur);
                     }
@@ -138,11 +189,14 @@ public final class ParsedXml {
     }
 
     private boolean validAttrNameChar(char c) {
-        return Character.isLetterOrDigit(c) || c == '-' || c == '_' || c == '.';
+        return Character.isLetterOrDigit(c) || c == '_' || c == '.';
     }
 
-    private boolean validAttrValueChar(char c) {
-        return Character.isLetterOrDigit(c) || c == '-' || c == '_' || c == '.';
+    private boolean isValidCommentText(char c, boolean charIsEscaped) {
+        if (charIsEscaped) {
+            return true;
+        }
+        return c != '-';
     }
 
     private boolean isQuote(char c) {
