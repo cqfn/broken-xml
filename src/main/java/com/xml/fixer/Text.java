@@ -1,21 +1,21 @@
 package com.xml.fixer;
 
 public class Text {
-    private final long start;
-    private final long end;
+    private final int start;
+    private final int end;
     private final String value;
 
-    public Text(final long start, final long end, final String text) {
+    public Text(final int start, final int end, final String text) {
         this.start = start;
         this.end = end;
         this.value = text;
     }
 
-    public long getStart() {
+    public int getStart() {
         return start;
     }
 
-    public long getEnd() {
+    public int getEnd() {
         return end;
     }
 

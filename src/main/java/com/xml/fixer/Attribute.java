@@ -4,18 +4,18 @@ public class Attribute {
 
     private final String name;
     private final String value;
-    private final long nameStart;
-    private final long nameEnd;
-    private final long valueStart;
-    private final long valueEnd;
+    private final int nameStart;
+    private final int nameEnd;
+    private final int valueStart;
+    private final int valueEnd;
 
     public Attribute(
         final String name,
         final String value,
-        final long nameStart,
-        final long nameEnd,
-        final long valueStart,
-        final long valueEnd
+        final int nameStart,
+        final int nameEnd,
+        final int valueStart,
+        final int valueEnd
     ) {
         this.name = name;
         this.value = value;
@@ -25,19 +25,19 @@ public class Attribute {
         this.valueEnd = valueEnd;
     }
 
-    public long getNameStart() {
+    public int getNameStart() {
         return nameStart;
     }
 
-    public long getNameEnd() {
+    public int getNameEnd() {
         return nameEnd;
     }
 
-    public long getValueStart() {
+    public int getValueStart() {
         return valueStart;
     }
 
-    public long getValueEnd() {
+    public int getValueEnd() {
         return valueEnd;
     }
 }

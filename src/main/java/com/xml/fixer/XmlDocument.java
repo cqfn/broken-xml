@@ -4,22 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlDocument {
-    private long start;
-    private long end;
-    private final XmlHeadElement[] xmlHead;
+    private int start;
+    private int end;
+    private XmlHeadElement xmlHead;
     private final List<Comment> comments;
     private final List<Element> elements;
 
-    public XmlDocument(final long start, final long end) {
+    public XmlDocument(final int start, final int end) {
         this.start = start;
         this.end = end;
-        this.xmlHead = new XmlHeadElement[]{ null };
+        this.xmlHead = null;
         this.comments = new ArrayList<>();
         this.elements = new ArrayList<>();
     }
 
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+
     public XmlHeadElement getHead() {
-        return this.xmlHead[0];
+        return this.xmlHead;
     }
 
     public List<Comment> getComments() {
@@ -31,11 +41,11 @@ public class XmlDocument {
     }
 
     public boolean hasHead() {
-        return this.xmlHead[0] != null;
+        return this.xmlHead != null;
     }
 
-    void addHead(XmlHeadElement head) {
-        this.xmlHead[0] = head;
+    void setHead(XmlHeadElement head) {
+        this.xmlHead = head;
     }
 
     void addComment(Comment comment) {

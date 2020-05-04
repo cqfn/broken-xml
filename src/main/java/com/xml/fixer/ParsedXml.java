@@ -21,28 +21,27 @@ public final class ParsedXml {
 
         final Stack<Element> elements = new Stack<>();
         Element curElm = null;
+        Element curParentElm = null;
         boolean nextCharIsEscaped = false;
 
         boolean headElmIsInProcess = false;
         boolean headAttrsIsInProcess = false;
         boolean newElmIsInProcess = false;
-        long newElmStart = 0;
-        long newElmEnd = 0;
         boolean newElmNameIsInProcess = false;
-        long newElmNameStart = 0;
-        long newElmNameEnd = 0;
+        boolean newElmCloseNameIsInProcess = false;
         boolean newAttrNameIsInProcess = false;
-        long newAttrNameStart = 0;
-        long newAttrNameEnd = 0;
+        int newAttrNameStart = 0;
+        int newAttrNameEnd = 0;
         boolean newAttrValueIsInProcess = false;
-        long newAttrValueStart = 0;
-        long newAttrValueEnd = 0;
+        int newAttrValueStart = 0;
+        int newAttrValueEnd = 0;
         boolean newCommentIsInProcess = false;
         boolean newCommentTextIsInProcess = false;
-        long newCommentStart = 0;
-        long newCommentEnd = 0;
+        int newCommentStart = 0;
+        int newCommentEnd = 0;
         boolean newTextIsInProcess = false;
         StringBuilder curElmName = null;
+        StringBuilder curElmCloseName = null;
         StringBuilder curAttrName = null;
         StringBuilder curAttrValue = null;
         StringBuilder curElmText = null;
@@ -78,6 +77,28 @@ public final class ParsedXml {
                     }
                     continue;
                 }
+                if (newElmNameIsInProcess) {
+                    newElmNameIsInProcess = false;
+                    if (curElm != null) {
+                        curElm.setName(curElmName.toString());
+                    }
+                    curElmName = null;
+                    continue;
+                }
+                if (newElmCloseNameIsInProcess && curElm != null) {
+                    if (curElmCloseName.toString().equals(curElm.getName())) {
+                        curElm.setEnd(i);
+                        curParentElm.addChild(curElm);
+                        elements.pop();
+                        if (elements.size() == 0) {
+                            doc.addElement(curParentElm);
+                        }
+                        curElm = null;
+                        curParentElm = null;
+                    }
+                    newElmCloseNameIsInProcess = false;
+                    continue;
+                }
             }
 
             if (cur == '?' && !nextCharIsEscaped) {
@@ -90,7 +111,7 @@ public final class ParsedXml {
                     if (!doc.hasHead()) {
                         XmlHeadElement head = new XmlHeadElement();
                         head.setStart(i - 1);
-                        doc.addHead(head);
+                        doc.setHead(head);
                     }
                     continue;
                 }
@@ -125,6 +146,14 @@ public final class ParsedXml {
                 }
             }
 
+            if (cur == '/' && !nextCharIsEscaped) {
+                if (i - 1 > 0 && chars[i - 1] == '<') {
+                    newElmCloseNameIsInProcess = true;
+                    curElmCloseName = new StringBuilder();
+                    continue;
+                }
+            }
+
             if (isDelimiter(cur)) {
                 if (newElmIsInProcess && !newAttrNameIsInProcess && !newAttrValueIsInProcess) {
                     if (headElmIsInProcess) {
@@ -134,10 +163,44 @@ public final class ParsedXml {
                         }
                         continue;
                     }
+                    if (newElmNameIsInProcess) {
+                        newElmNameIsInProcess = false;
+                        if (curElm != null) {
+                            curElm.setName(curElmName.toString());
+                        }
+                        curElmName = null;
+                        continue;
+                    }
+                }
+            }
+
+            if (isValidElmNameChar(cur)) {
+                if (newElmIsInProcess && newElmNameIsInProcess && !newAttrNameIsInProcess && !newAttrValueIsInProcess) {
+                    curElmName.append(cur);
+                    continue;
+                }
+                if (newElmIsInProcess && newElmCloseNameIsInProcess && !newAttrNameIsInProcess && !newAttrValueIsInProcess) {
+                    curElmCloseName.append(cur);
+                    continue;
                 }
             }
 
             if (newElmIsInProcess && !newAttrNameIsInProcess && !newAttrValueIsInProcess) {
+                if (!newElmNameIsInProcess && !headElmIsInProcess && isValidElmNameChar(cur)) {
+                    newElmNameIsInProcess = true;
+                    if (elements.size() > 0) {
+                        curParentElm = elements.get(elements.size() - 1);
+                    }
+                    elements.push(new Element());
+                    curElm = elements.get(elements.size() - 1);
+                    if (curParentElm == null) {
+                        curParentElm = elements.get(elements.size() - 1);
+                    }
+                    curElmName = new StringBuilder();
+                    curElmName.append(cur);
+                    curElm.setStart(i - 1);
+                    continue;
+                }
                 if (newCommentIsInProcess && newCommentTextIsInProcess) {
                     if (curCommentText != null && isValidCommentText(cur, nextCharIsEscaped)) {
                         curCommentText.append(cur);
@@ -213,6 +276,10 @@ public final class ParsedXml {
     }
 
     private boolean isValidAttrNameChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '_' || c == '.';
+    }
+
+    private boolean isValidElmNameChar(char c) {
         return Character.isLetterOrDigit(c) || c == '_' || c == '.';
     }
 

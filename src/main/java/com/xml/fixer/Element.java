@@ -10,8 +10,6 @@ public final class Element {
     private final List<Attribute> attributes;
     private final List<Element> children;
     private String name;
-    private long nameStart;
-    private long nameEnd;
     private Text text;
 
     public Element() {
@@ -28,19 +26,15 @@ public final class Element {
     }
 
     public long getStart() {
-        return start;
+        return this.start;
     }
 
     public long getEnd() {
-        return end;
+        return this.end;
     }
 
-    public long getNameStart() {
-        return nameStart;
-    }
-
-    public long getNameEnd() {
-        return nameEnd;
+    public String getName() {
+        return this.name;
     }
 
     void setStart(long start) {
@@ -53,14 +47,6 @@ public final class Element {
 
     void setName(String name) {
         this.name = name;
-    }
-
-    void setNameStart(final long nameStart) {
-        this.nameStart = nameStart;
-    }
-
-    void setNameEnd(final long nameEnd) {
-        this.nameEnd = nameEnd;
     }
 
     void setText(Text text) {
