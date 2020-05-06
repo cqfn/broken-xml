@@ -1,5 +1,5 @@
 # xml-fixer
-Fix invalid xml as much as it's possible. 
+Parses any xml format, even broken and invalid(as much it makes sense). 
 
  - [ ] escape special charaters
  - [ ] split document with multiple roots into several documents
