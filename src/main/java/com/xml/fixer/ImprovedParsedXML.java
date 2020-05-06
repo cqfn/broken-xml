@@ -36,6 +36,11 @@ public class ImprovedParsedXML {
         int curAttributeValueStart = 0;
         int curAttributeValueEnd = 0;
 
+        boolean commentIsInProcess = false;
+        StringBuilder curComment = null;
+        int curCommentStart = 0;
+        int curCommentEnd = 0;
+
         final XmlDocument doc = new XmlDocument(0, len);
 
         for (int i = 0; i < len; i++) {
@@ -67,7 +72,6 @@ public class ImprovedParsedXML {
 
             if (cur == '?' && i < len - 1 && chars[i + 1] == '>') {
                 if (headElmIsInProcess) {
-                    headElmIsInProcess = false;
                     curHeadElement.setEnd(i + 1);
                     doc.setHead(curHeadElement);
                     if (attributesIsInProcess) {
@@ -77,6 +81,8 @@ public class ImprovedParsedXML {
                         );
                         curAttributes = new ArrayList<>();
                     }
+                    headElmIsInProcess = false;
+                    curHeadElement = null;
                 }
                 continue;
             }
@@ -105,10 +111,30 @@ public class ImprovedParsedXML {
             }
 
             if (cur == '-' && i > 2 && chars[i - 1] == '-' && chars[i - 2] == '!' && chars[i - 3] == '<') {
+                if (!commentIsInProcess) {
+                    commentIsInProcess = true;
+                    curComment = new StringBuilder();
+                    curCommentStart = i - 3;
+                }
                 continue;
             }
 
-            if (cur == '-' && i < len - 3 && chars[i + 1] == '-' && chars[i + 2] == '-' && chars[i + 3] == '>') {
+            if (cur == '-' && i < len - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
+                if (commentIsInProcess) {
+                    curCommentEnd = i + 2;
+                    doc.addComment(
+                        new Comment(
+                            curComment.toString(),
+                            curCommentStart,
+                            curCommentEnd
+                        )
+                    );
+                    commentIsInProcess = false;
+                    curComment = null;
+                    curCommentStart = 0;
+                    curCommentEnd = 0;
+                    continue;
+                }
                 continue;
             }
 
@@ -123,6 +149,9 @@ public class ImprovedParsedXML {
             if (isDelimiter(cur)) {
                 if (headElmIsInProcess) {
                     attributesIsInProcess = true;
+                }
+                if (commentIsInProcess) {
+                    curComment.append(cur);
                 }
                 continue;
             }
@@ -163,6 +192,10 @@ public class ImprovedParsedXML {
                             );
                             curAttributeName = null;
                             curAttributeValue = null;
+                            curAttributeNameStart = 0;
+                            curAttributeNameEnd = 0;
+                            curAttributeValueStart = 0;
+                            curAttributeValueEnd = 0;
                             continue;
                         }
                     }
@@ -188,6 +221,12 @@ public class ImprovedParsedXML {
                         continue;
                     }
                 }
+                continue;
+            }
+
+            if (commentIsInProcess) {
+                curComment.append(cur);
+                continue;
             }
         }
         return doc;

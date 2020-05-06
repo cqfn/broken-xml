@@ -6,10 +6,10 @@ public final class Comment {
     private final int end;
     private final String text;
 
-    public Comment(final int start, final int end, final String text) {
+    public Comment(final String text, final int start, final int end) {
+        this.text = text;
         this.start = start;
         this.end = end;
-        this.text = text;
     }
 
     public int getStart() {
