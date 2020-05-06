@@ -7,8 +7,8 @@ public final class Element {
 
     private long start;
     private long end;
-    private final List<Attribute> attributes;
-    private final List<Element> children;
+    private List<Attribute> attributes;
+    private List<Element> children;
     private String name;
     private Text text;
 
@@ -21,8 +21,8 @@ public final class Element {
         this.children.add(child);
     }
 
-    void addAttribute(Attribute attribute) {
-        this.attributes.add(attribute);
+    void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     public long getStart() {

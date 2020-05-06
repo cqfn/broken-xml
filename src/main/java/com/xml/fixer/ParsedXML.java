@@ -120,6 +120,10 @@ public class ParsedXML {
                 }
                 if (attributesIsInProcess) {
                     attributesIsInProcess = false;
+                    curElm.setAttributes(
+                        curAttributes
+                    );
+                    curAttributes = new ArrayList<>();
                 }
                 if (openElmNameIsInProcess && curElm != null && curOpenElmName != null) {
                     curElm.setName(curOpenElmName.toString());
@@ -264,6 +268,14 @@ public class ParsedXML {
                             curAttributeNameEnd = i - 1;
                         }
                     }
+                    continue;
+                }
+                if (attributesIsInProcess) {
+                    if (attributeNameIsInProcess) {
+                        attributeNameIsInProcess = false;
+                        curAttributeNameEnd = i - 1;
+                    }
+                    continue;
                 }
                 continue;
             }
@@ -301,7 +313,33 @@ public class ParsedXML {
                     }
                 }
                 if (attributesIsInProcess) {
-                    attributeValueIsInProcess = !attributeNameIsInProcess && !attributeValueIsInProcess;
+                    if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
+                        attributeValueIsInProcess = true;
+                        curAttributeValue = new StringBuilder();
+                        curAttributeValueStart = i + 1;
+                        continue;
+                    }
+                    if (attributeValueIsInProcess) {
+                        attributeValueIsInProcess = false;
+                        curAttributeValueEnd = i - 1;
+                        curAttributes.add(
+                            new Attribute(
+                                curAttributeName.toString(),
+                                curAttributeValue.toString(),
+                                curAttributeNameStart,
+                                curAttributeNameEnd,
+                                curAttributeValueStart,
+                                curAttributeValueEnd
+                            )
+                        );
+                        curAttributeName = null;
+                        curAttributeValue = null;
+                        curAttributeNameStart = 0;
+                        curAttributeNameEnd = 0;
+                        curAttributeValueStart = 0;
+                        curAttributeValueEnd = 0;
+                        continue;
+                    }
                 }
                 continue;
             }
@@ -325,6 +363,24 @@ public class ParsedXML {
                     }
                 }
                 continue;
+            }
+
+            if (attributesIsInProcess) {
+                if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
+                    attributeNameIsInProcess = true;
+                    curAttributeName = new StringBuilder();
+                    curAttributeNameStart = i;
+                    curAttributeName.append(cur);
+                    continue;
+                }
+                if (attributeNameIsInProcess && !attributeValueIsInProcess) {
+                    curAttributeName.append(cur);
+                    continue;
+                }
+                if (attributeValueIsInProcess) {
+                    curAttributeValue.append(cur);
+                    continue;
+                }
             }
 
             if (commentIsInProcess) {

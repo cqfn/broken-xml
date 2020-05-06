@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" custom='in_single_quotes'?>
 <!-- comment -->
-<bookstore name="BOOKSTORE">
+<bookstore name="BOOKSTORE" country="France">
   <book category="COOKING">
     <title lang = "en">Everyday Italian</title>
     <author>Giada De Laurentiis</author>

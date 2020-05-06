@@ -35,8 +35,4 @@ public class XmlHeadElement {
     void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
     }
-
-    void addAttribute(Attribute attribute) {
-        this.attributes.add(attribute);
-    }
 }
