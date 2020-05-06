@@ -6,7 +6,7 @@ import java.util.List;
 public class XmlHeadElement {
     private long start;
     private long end;
-    private final List<Attribute> attributes;
+    private List<Attribute> attributes;
 
     public XmlHeadElement() {
         this.attributes = new ArrayList<>();
@@ -30,6 +30,10 @@ public class XmlHeadElement {
 
     void setEnd(long end) {
         this.end = end;
+    }
+
+    void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     void addAttribute(Attribute attribute) {
