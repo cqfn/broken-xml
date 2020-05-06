@@ -1,4 +1,4 @@
-import com.xml.fixer.ImprovedParsedXML;
+import com.xml.fixer.ParsedXML;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -7,7 +7,7 @@ public class ParsedXmlTest {
 
     @Test
     public void test() throws IOException, NoSuchFieldException, IllegalAccessException {
-        final ImprovedParsedXML xml = new ImprovedParsedXML(dataByPath("valid-xml.xml"));
+        final ParsedXML xml = new ParsedXML(dataByPath("valid-xml.xml"));
         xml.value();
 
     }

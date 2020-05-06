@@ -4,11 +4,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImprovedParsedXML {
+public class ParsedXML {
 
     private final String xml;
 
-    public ImprovedParsedXML(final String xml) {
+    public ParsedXML(final String xml) {
         this.xml = xml;
     }
 
@@ -26,6 +26,9 @@ public class ImprovedParsedXML {
         boolean attributesIsInProcess = false;
         List<Attribute> curAttributes = new ArrayList<>();
 
+        boolean elmNameIsInProcess = false;
+        StringBuilder curElmName = null;
+
         boolean attributeNameIsInProcess = false;
         StringBuilder curAttributeName = null;
         int curAttributeNameStart = 0;
@@ -41,18 +44,20 @@ public class ImprovedParsedXML {
         int curCommentStart = 0;
         int curCommentEnd = 0;
 
+        boolean elmTextIsInProcess = false;
+
+        int numberOfOpenBrackets = 0;
+        int numberOfClosedBrackets = 0;
+
+        boolean curRootIsInProcess = false;
+        Element curRoot = null;
+        int curRootStart = 0;
+        int curRootEnd = 0;
+
         final XmlDocument doc = new XmlDocument(0, len);
 
         for (int i = 0; i < len; i++) {
             final char cur = chars[i];
-
-            if (cur == '<' && i < len - 1 && chars[i + 1] == '/') {
-                continue;
-            }
-
-            if (cur == '/' && i > 0 && chars[i - 1] == '<') {
-                continue;
-            }
 
             if (cur == '<' && i < len - 1 && chars[i + 1] == '?') {
                 continue;
@@ -62,11 +67,49 @@ public class ImprovedParsedXML {
                 continue;
             }
 
+            if (cur == '>' && i > 0 && chars[i - 1] == '?') {
+                continue;
+            }
+
             if (cur == '<' && i < len - 1 && chars[i + 1] == '!') {
                 continue;
             }
 
-            if (cur == '>' && i > 0 && chars[i - 1] == '?') {
+            if (cur == '>' && i > 0 && chars[i - 1] == '-') {
+                continue;
+            }
+
+            if (cur == '>') {
+                if (i + 1 < len && !elmTextIsInProcess) {
+                    elmTextIsInProcess = true;
+                    continue;
+                }
+                if (attributesIsInProcess) {
+                    attributesIsInProcess = false;
+                    continue;
+                }
+                continue;
+            }
+
+            if (cur == '<') {
+                if (!attributeValueIsInProcess && i < len - 1) {
+                    if (chars[i + 1] != '/') {
+                        numberOfOpenBrackets += 1;
+                        if (!elmNameIsInProcess) {
+                            elmNameIsInProcess = true;
+                            curElmName = new StringBuilder();
+                        }
+                    } else {
+                        numberOfClosedBrackets += 1;
+                    }
+                }
+                if (elmTextIsInProcess) {
+                    elmTextIsInProcess = false;
+                }
+                continue;
+            }
+
+            if (cur == '/' && i > 0 && chars[i - 1] == '<') {
                 continue;
             }
 
@@ -102,10 +145,6 @@ public class ImprovedParsedXML {
                 continue;
             }
 
-            if (cur == '>' && i > 0 && chars[i - 1] == '-') {
-                continue;
-            }
-
             if (cur == '-' && i < len - 1 && chars[i + 1] == '>') {
                 continue;
             }
@@ -138,20 +177,19 @@ public class ImprovedParsedXML {
                 continue;
             }
 
-            if (cur == '<') {
-                continue;
-            }
-
-            if (cur == '>') {
-                continue;
-            }
-
             if (isDelimiter(cur)) {
                 if (headElmIsInProcess) {
                     attributesIsInProcess = true;
+                    continue;
                 }
                 if (commentIsInProcess) {
                     curComment.append(cur);
+                    continue;
+                }
+                if (elmNameIsInProcess) {
+                    elmNameIsInProcess = false;
+                    attributesIsInProcess = true;
+                    continue;
                 }
                 continue;
             }
@@ -200,6 +238,9 @@ public class ImprovedParsedXML {
                         }
                     }
                 }
+                if (attributesIsInProcess) {
+                    attributeValueIsInProcess = !attributeNameIsInProcess && !attributeValueIsInProcess;
+                }
                 continue;
             }
 
@@ -226,6 +267,11 @@ public class ImprovedParsedXML {
 
             if (commentIsInProcess) {
                 curComment.append(cur);
+                continue;
+            }
+
+            if (elmNameIsInProcess) {
+                curElmName.append(cur);
                 continue;
             }
         }
