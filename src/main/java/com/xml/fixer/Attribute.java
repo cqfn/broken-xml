@@ -1,6 +1,6 @@
 package com.xml.fixer;
 
-public class Attribute {
+public final class Attribute {
 
     private final String name;
     private final String value;

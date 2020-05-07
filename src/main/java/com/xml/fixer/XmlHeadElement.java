@@ -1,15 +1,19 @@
 package com.xml.fixer;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class XmlHeadElement {
-    private long start;
-    private long end;
-    private List<Attribute> attributes;
+public final class XmlHeadElement {
+    private final long start;
+    private final long end;
+    private final List<Attribute> attributes;
 
-    public XmlHeadElement() {
-        this.attributes = new ArrayList<>();
+    public XmlHeadElement(
+        final long start,
+        final long end,
+        final List<Attribute> attributes) {
+        this.start = start;
+        this.end = end;
+        this.attributes = attributes;
     }
 
     public long getStart() {
@@ -22,17 +26,5 @@ public class XmlHeadElement {
 
     public List<Attribute> getAttributes() {
         return attributes;
-    }
-
-    void setStart(long start) {
-        this.start = start;
-    }
-
-    void setEnd(long end) {
-        this.end = end;
-    }
-
-    void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
     }
 }

@@ -1,6 +1,6 @@
 package com.xml.fixer;
 
-public class Text {
+public final class Text {
     private final int start;
     private final int end;
     private final String value;

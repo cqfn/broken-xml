@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class ParsedXML {
+public final class ParsedXML {
 
     private final String xml;
 
@@ -23,6 +23,8 @@ public class ParsedXML {
 
         boolean headElementIsInProcess = false;
         XmlHeadElement currentHeadElement = null;
+        int currentHeadElementStart = 0;
+        int currentHeadElementEnd = 0;
 
         boolean attributesIsInProcess = false;
         List<Attribute> currentAttributes = new ArrayList<>();
@@ -38,7 +40,7 @@ public class ParsedXML {
         int currentAttributeValueEnd = 0;
 
         boolean commentIsInProcess = false;
-        StringBuilder curComment = null;
+        StringBuilder curCommentText = null;
         int currentCommentStart = 0;
         int currentCommentEnd = 0;
 
@@ -47,13 +49,16 @@ public class ParsedXML {
         int numberOfOpenBrackets = 0;
         int numberOfClosedBrackets = 0;
 
-        Element currentElm = null;
-        Element currentParentElm = null;
+        Element currentElement = null;
+        Element currentParentElement = null;
+
+        int currentElementStart = 0;
+        int currentElementEnd = 0;
 
         Stack<Element> processingElms = new Stack<>();
 
         boolean openingElementNameIsInProcess = false;
-        StringBuilder currentOpeningElememtName = null;
+        StringBuilder currentOpeningElementName = null;
 
         boolean closingElementNameIsInProcess = false;
         StringBuilder currentClosingElementName = null;
@@ -61,43 +66,36 @@ public class ParsedXML {
         final XmlDocument document = new XmlDocument(0, inputLength);
 
         for (int i = 0; i < inputLength; i++) {
-            final char cur = chars[i];
+            final char currentChar = chars[i];
 
-            if (cur == '<' && i < inputLength - 1 && chars[i + 1] == '?') {
+            if (currentChar == '<' && i < inputLength - 1 && chars[i + 1] == '?') {
                 continue;
             }
 
-            if (cur == '?' && i > 0 && chars[i - 1] == '<') {
+            if (currentChar == '?' && i > 0 && chars[i - 1] == '<') {
                 continue;
             }
 
-            if (cur == '>' && i > 0 && chars[i - 1] == '?') {
+            if (currentChar == '>' && i > 0 && chars[i - 1] == '?') {
                 continue;
             }
 
-            if (cur == '<' && i < inputLength - 1 && chars[i + 1] == '!') {
+            if (currentChar == '<' && i < inputLength - 1 && chars[i + 1] == '!') {
                 continue;
             }
 
-            if (cur == '>' && i > 0 && chars[i - 1] == '-') {
+            if (currentChar == '>' && i > 0 && chars[i - 1] == '-') {
                 continue;
             }
 
-            if (cur == '<') {
+            if (currentChar == '<') {
                 if (!attributeValueIsInProcess && i < inputLength - 1) {
                     if (chars[i + 1] != '/') {
                         numberOfOpenBrackets += 1;
                         if (!openingElementNameIsInProcess) {
                             openingElementNameIsInProcess = true;
-                            currentElm = new Element();
-                            currentOpeningElememtName = new StringBuilder();
-                            currentElm.setStart(i);
-                            if (processingElms.size() == 0) {
-                                currentParentElm = currentElm;
-                            } else {
-                                currentParentElm = processingElms.get(processingElms.size() - 1);
-                            }
-                            processingElms.push(currentElm);
+                            currentOpeningElementName = new StringBuilder();
+                            currentElementStart = i;
                         }
                     } else {
                         numberOfClosedBrackets += 1;
@@ -113,36 +111,43 @@ public class ParsedXML {
                 continue;
             }
 
-            if (cur == '>') {
+            if (currentChar == '>') {
                 if (i + 1 < inputLength && !elementTextIsInProcess) {
                     elementTextIsInProcess = true;
                 }
-                if (attributesIsInProcess) {
-                    attributesIsInProcess = false;
-                    currentElm.setAttributes(
-                        currentAttributes
+                if (currentOpeningElementName != null) {
+                    currentElement = new Element(
+                        currentOpeningElementName.toString(),
+                        currentElementStart
                     );
-                    currentAttributes = new ArrayList<>();
-                }
-                if (openingElementNameIsInProcess && currentElm != null && currentOpeningElememtName != null) {
-                    currentElm.setName(currentOpeningElememtName.toString());
+                    currentElement.getAttributes().addAll(currentAttributes);
+                    if (processingElms.size() == 0) {
+                        currentParentElement = currentElement;
+                    } else {
+                        currentParentElement = processingElms.get(processingElms.size() - 1);
+                    }
+                    processingElms.push(currentElement);
                     openingElementNameIsInProcess = false;
-                    currentOpeningElememtName = null;
+                    currentOpeningElementName = null;
+                    if (attributesIsInProcess) {
+                        attributesIsInProcess = false;
+                        currentAttributes = new ArrayList<>();
+                    }
                     continue;
                 }
-                if (closingElementNameIsInProcess && currentElm != null && currentParentElm != null) {
-                    currentElm.setEnd(i);
-                    if (currentParentElm != currentElm) {
-                        currentParentElm.addChild(currentElm);
+                if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
+                    currentElement.correctEnd(i);
+                    if (currentParentElement != currentElement) {
+                        currentParentElement.getChildren().add(currentElement);
                     }
                     processingElms.pop();
                     if (processingElms.size() == 0) {
-                        document.addRoot(currentParentElm);
-                        currentParentElm = null;
+                        document.getRoots().add(currentParentElement);
+                        currentParentElement = null;
                     } else {
-                        currentElm = processingElms.get(processingElms.size() - 1);
+                        currentElement = processingElms.get(processingElms.size() - 1);
                         if (processingElms.size() > 1) {
-                            currentParentElm = processingElms.get(processingElms.size() - 2);
+                            currentParentElement = processingElms.get(processingElms.size() - 2);
                         }
                     }
                     closingElementNameIsInProcess = false;
@@ -152,67 +157,70 @@ public class ParsedXML {
                 continue;
             }
 
-            if (cur == '/' && i > 0 && chars[i - 1] == '<') {
+            if (currentChar == '/' && i > 0 && chars[i - 1] == '<') {
                 continue;
             }
 
-            if (cur == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
+            if (currentChar == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
                 if (headElementIsInProcess) {
-                    currentHeadElement.setEnd(i + 1);
-                    document.setHead(currentHeadElement);
+                    currentHeadElementEnd = i + 1;
+                    currentHeadElement = new XmlHeadElement(
+                        currentHeadElementStart,
+                        currentHeadElementEnd,
+                        currentAttributes
+                    );
+                    document.getHeads().add(currentHeadElement);
                     if (attributesIsInProcess) {
                         attributesIsInProcess = false;
-                        document.getHead().setAttributes(
-                            currentAttributes
-                        );
                         currentAttributes = new ArrayList<>();
                     }
                     headElementIsInProcess = false;
                     currentHeadElement = null;
+                    currentHeadElementStart = 0;
+                    currentHeadElementEnd = 0;
                 }
                 continue;
             }
 
-            if (cur == 'l' && i > 3 && chars[i - 1] == 'm' && chars[i - 2] == 'x' && chars[i - 3] == '?' && chars[i - 4] == '<') {
+            if (currentChar == 'l' && i > 3 && chars[i - 1] == 'm' && chars[i - 2] == 'x' && chars[i - 3] == '?' && chars[i - 4] == '<') {
                 headElementIsInProcess = true;
-                currentHeadElement = new XmlHeadElement();
-                currentHeadElement.setStart(i - 4);
+                currentHeadElementStart = i - 4;
                 continue;
             }
 
-            if (cur == 'm' && i > 2 && i < inputLength - 1 && chars[i + 1] == 'l' && chars[i - 1] == 'x' && chars[i - 2] == '?' && chars[i - 3] == '<') {
+            if (currentChar == 'm' && i > 2 && i < inputLength - 1 && chars[i + 1] == 'l' && chars[i - 1] == 'x' && chars[i - 2] == '?' && chars[i - 3] == '<') {
                 continue;
             }
 
-            if (cur == 'x' && i > 1 && i < inputLength - 2 && chars[i + 1] == 'm' && chars[i + 2] == 'l' && chars[i - 1] == '?' && chars[i - 2] == '<') {
+            if (currentChar == 'x' && i > 1 && i < inputLength - 2 && chars[i + 1] == 'm' && chars[i + 2] == 'l' && chars[i - 1] == '?' && chars[i - 2] == '<') {
                 continue;
             }
 
-            if (cur == '-' && i < inputLength - 1 && chars[i + 1] == '>') {
+            if (currentChar == '-' && i < inputLength - 1 && chars[i + 1] == '>') {
                 continue;
             }
 
-            if (cur == '-' && i > 2 && chars[i - 1] == '-' && chars[i - 2] == '!' && chars[i - 3] == '<') {
+            if (currentChar == '-' && i > 2 && chars[i - 1] == '-' && chars[i - 2] == '!' && chars[i - 3] == '<') {
                 if (!commentIsInProcess) {
                     commentIsInProcess = true;
-                    curComment = new StringBuilder();
+                    curCommentText = new StringBuilder();
                     currentCommentStart = i - 3;
                 }
                 continue;
             }
 
-            if (cur == '-' && i < inputLength - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
+            if (currentChar == '-' && i < inputLength - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
                 if (commentIsInProcess) {
                     currentCommentEnd = i + 2;
-                    document.addComment(
+                    document.getComments().add(
                         new Comment(
-                            curComment.toString(),
+                            curCommentText.toString(),
                             currentCommentStart,
                             currentCommentEnd
                         )
                     );
                     commentIsInProcess = false;
-                    curComment = null;
+                    curCommentText = null;
                     currentCommentStart = 0;
                     currentCommentEnd = 0;
                     continue;
@@ -220,35 +228,33 @@ public class ParsedXML {
                 continue;
             }
 
-            if (isDelimiter(cur)) {
+            if (isDelimiter(currentChar)) {
                 if (headElementIsInProcess) {
                     attributesIsInProcess = true;
                     continue;
                 }
                 if (commentIsInProcess) {
-                    curComment.append(cur);
+                    curCommentText.append(currentChar);
                     continue;
                 }
-                if (openingElementNameIsInProcess && currentElm != null && currentOpeningElememtName != null) {
-                    currentElm.setName(currentOpeningElememtName.toString());
+                if (openingElementNameIsInProcess) {
                     openingElementNameIsInProcess = false;
                     attributesIsInProcess = true;
-                    currentOpeningElememtName = null;
                     continue;
                 }
-                if (closingElementNameIsInProcess && currentElm != null && currentParentElm != null) {
-                    currentElm.setEnd(i);
-                    if (currentParentElm != currentElm) {
-                        currentParentElm.addChild(currentElm);
+                if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
+                    currentElement.correctEnd(i);
+                    if (currentParentElement != currentElement) {
+                        currentParentElement.getChildren().add(currentElement);
                     }
                     processingElms.pop();
                     if (processingElms.size() == 0) {
-                        document.addRoot(currentParentElm);
-                        currentParentElm = null;
+                        document.getRoots().add(currentParentElement);
+                        currentParentElement = null;
                     } else {
-                        currentElm = processingElms.get(processingElms.size() - 1);
+                        currentElement = processingElms.get(processingElms.size() - 1);
                         if (processingElms.size() > 1) {
-                            currentParentElm = processingElms.get(processingElms.size() - 2);
+                            currentParentElement = processingElms.get(processingElms.size() - 2);
                         }
                     }
                     closingElementNameIsInProcess = false;
@@ -258,7 +264,7 @@ public class ParsedXML {
                 continue;
             }
 
-            if (cur == '=') {
+            if (currentChar == '=') {
                 if (attributesIsInProcess) {
                     if (attributeNameIsInProcess) {
                         attributeNameIsInProcess = false;
@@ -269,7 +275,7 @@ public class ParsedXML {
                 continue;
             }
 
-            if (isQuote(cur)) {
+            if (isQuote(currentChar)) {
                 if (attributesIsInProcess) {
                     if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
                         attributeValueIsInProcess = true;
@@ -307,31 +313,31 @@ public class ParsedXML {
                     attributeNameIsInProcess = true;
                     currentAttributeName = new StringBuilder();
                     currentAttributeNameStart = i;
-                    currentAttributeName.append(cur);
+                    currentAttributeName.append(currentChar);
                     continue;
                 }
                 if (attributeNameIsInProcess && !attributeValueIsInProcess) {
-                    currentAttributeName.append(cur);
+                    currentAttributeName.append(currentChar);
                     continue;
                 }
                 if (attributeValueIsInProcess) {
-                    currentAttributeValue.append(cur);
+                    currentAttributeValue.append(currentChar);
                     continue;
                 }
             }
 
             if (commentIsInProcess) {
-                curComment.append(cur);
+                curCommentText.append(currentChar);
                 continue;
             }
 
             if (openingElementNameIsInProcess) {
-                currentOpeningElememtName.append(cur);
+                currentOpeningElementName.append(currentChar);
                 continue;
             }
 
             if (closingElementNameIsInProcess) {
-                currentClosingElementName.append(cur);
+                currentClosingElementName.append(currentChar);
                 continue;
             }
         }

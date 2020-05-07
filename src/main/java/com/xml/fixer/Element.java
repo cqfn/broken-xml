@@ -4,32 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Element {
+    private final List<Attribute> attributes;
+    private final List<Element> children;
+    //private final Text text;
+    private final int start;
+    private int end;
+    private final String name;
 
-    private long start;
-    private long end;
-    private List<Attribute> attributes;
-    private List<Element> children;
-    private String name;
-    private Text text;
-
-    public Element() {
+    public Element(final String name, final int start) {
+        this.start = start;
         this.attributes = new ArrayList<>();
         this.children = new ArrayList<>();
+        this.end = 0;
+        this.name = name;
     }
 
-    void addChild(Element child) {
-        this.children.add(child);
-    }
-
-    void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public long getStart() {
+    public int getStart() {
         return this.start;
     }
 
-    public long getEnd() {
+    public int getEnd() {
         return this.end;
     }
 
@@ -37,19 +31,15 @@ public final class Element {
         return this.name;
     }
 
-    void setStart(long start) {
-        this.start = start;
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 
-    void setEnd(long end) {
+    public List<Element> getChildren() {
+        return children;
+    }
+
+    void correctEnd(final int end) {
         this.end = end;
-    }
-
-    void setName(String name) {
-        this.name = name;
-    }
-
-    void setText(Text text) {
-        this.text = text;
     }
 }
