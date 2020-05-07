@@ -6,21 +6,21 @@ public final class Comment {
     private final int end;
     private final String text;
 
-    public Comment(final String text, final int start, final int end) {
+    Comment(final String text, final int start, final int end) {
         this.text = text;
         this.start = start;
         this.end = end;
     }
 
-    public int getStart() {
+    public int start() {
         return this.start;
     }
 
-    public int getEnd() {
+    public int end() {
         return this.end;
     }
 
-    public String getText() {
+    public String text() {
         return this.text;
     }
 }

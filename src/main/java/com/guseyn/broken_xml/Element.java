@@ -11,7 +11,7 @@ public final class Element {
     private int end;
     private final String name;
 
-    public Element(final String name, final int start) {
+    Element(final String name, final int start) {
         this.start = start;
         this.attributes = new ArrayList<>();
         this.children = new ArrayList<>();
@@ -20,27 +20,27 @@ public final class Element {
         this.name = name;
     }
 
-    public int getStart() {
+    public int start() {
         return this.start;
     }
 
-    public int getEnd() {
+    public int end() {
         return this.end;
     }
 
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
-    public List<Attribute> getAttributes() {
+    public List<Attribute> attributes() {
         return this.attributes;
     }
 
-    public List<Element> getChildren() {
+    public List<Element> children() {
         return this.children;
     }
 
-    public List<Text> getTexts() {
+    public List<Text> texts() {
         return this.texts;
     }
 

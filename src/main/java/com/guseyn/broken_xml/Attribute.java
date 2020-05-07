@@ -9,7 +9,7 @@ public final class Attribute {
     private final int valueStart;
     private final int valueEnd;
 
-    public Attribute(
+    Attribute(
         final String name,
         final String value,
         final int nameStart,
@@ -25,19 +25,27 @@ public final class Attribute {
         this.valueEnd = valueEnd;
     }
 
-    public int getNameStart() {
+    public String name() {
+        return name;
+    }
+
+    public String value() {
+        return value;
+    }
+
+    public int nameStart() {
         return this.nameStart;
     }
 
-    public int getNameEnd() {
+    public int nameEnd() {
         return this.nameEnd;
     }
 
-    public int getValueStart() {
+    public int valueStart() {
         return this.valueStart;
     }
 
-    public int getValueEnd() {
+    public int valueEnd() {
         return this.valueEnd;
     }
 }

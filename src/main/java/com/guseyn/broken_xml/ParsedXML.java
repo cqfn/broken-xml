@@ -99,7 +99,7 @@ public final class ParsedXML {
                         currentHeadElementEnd,
                         currentAttributes
                     );
-                    document.getHeads().add(currentHeadElement);
+                    document.heads().add(currentHeadElement);
                     if (attributesIsInProcess) {
                         attributesIsInProcess = false;
                         currentAttributes = new ArrayList<>();
@@ -148,7 +148,7 @@ public final class ParsedXML {
             if (currentChar == '-' && i < inputLength - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
                 if (commentIsInProcess) {
                     currentCommentEnd = i + 2;
-                    document.getComments().add(
+                    document.comments().add(
                         new Comment(
                             currentCommentText.toString(),
                             currentCommentStart,
@@ -168,7 +168,7 @@ public final class ParsedXML {
                 if (elementTextIsInProcess) {
                     currentElementTextEnd = i - 1;
                     if (currentElement != null) {
-                        currentElement.getTexts().add(
+                        currentElement.texts().add(
                             new Text(
                                 currentElementText.toString(),
                                 currentElementTextStart,
@@ -211,7 +211,7 @@ public final class ParsedXML {
                         currentOpeningElementName.toString(),
                         currentElementStart
                     );
-                    currentElement.getAttributes().addAll(currentAttributes);
+                    currentElement.attributes().addAll(currentAttributes);
                     if (processingElms.size() == 0) {
                         currentParentElement = currentElement;
                     } else {
@@ -229,11 +229,11 @@ public final class ParsedXML {
                 if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
                     currentElement.correctEnd(i);
                     if (currentParentElement != currentElement) {
-                        currentParentElement.getChildren().add(currentElement);
+                        currentParentElement.children().add(currentElement);
                     }
                     processingElms.pop();
                     if (processingElms.size() == 0) {
-                        document.getRoots().add(currentParentElement);
+                        document.roots().add(currentParentElement);
                         currentParentElement = null;
                     } else {
                         currentElement = processingElms.get(processingElms.size() - 1);
@@ -273,11 +273,11 @@ public final class ParsedXML {
                 if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
                     currentElement.correctEnd(i);
                     if (currentParentElement != currentElement) {
-                        currentParentElement.getChildren().add(currentElement);
+                        currentParentElement.children().add(currentElement);
                     }
                     processingElms.pop();
                     if (processingElms.size() == 0) {
-                        document.getRoots().add(currentParentElement);
+                        document.roots().add(currentParentElement);
                         currentParentElement = null;
                     } else {
                         currentElement = processingElms.get(processingElms.size() - 1);

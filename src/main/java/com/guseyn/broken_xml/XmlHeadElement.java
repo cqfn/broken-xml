@@ -7,7 +7,7 @@ public final class XmlHeadElement {
     private final long end;
     private final List<Attribute> attributes;
 
-    public XmlHeadElement(
+    XmlHeadElement(
         final long start,
         final long end,
         final List<Attribute> attributes) {
@@ -16,15 +16,15 @@ public final class XmlHeadElement {
         this.attributes = attributes;
     }
 
-    public long getStart() {
+    public long start() {
         return this.start;
     }
 
-    public long getEnd() {
+    public long end() {
         return this.end;
     }
 
-    public List<Attribute> getAttributes() {
+    public List<Attribute> attributes() {
         return attributes;
     }
 }
