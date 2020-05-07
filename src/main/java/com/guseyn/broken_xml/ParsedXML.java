@@ -1,4 +1,4 @@
-package com.xml.fixer;
+package com.guseyn.broken_xml;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -13,13 +13,10 @@ public final class ParsedXML {
         this.xml = xml;
     }
 
-    public XmlDocument value() throws NoSuchFieldException, IllegalAccessException {
+    public XmlDocument value() {
 
-        final Field field = String.class.getDeclaredField("value");
-        field.setAccessible(true);
-        final char[] chars = (char[]) field.get(xml);
-        final int inputLength = chars.length;
-        assert inputLength == xml.length();
+        final int inputLength = xml.length();
+        final char[] chars = xml.toCharArray();
 
         boolean headElementIsInProcess = false;
         XmlHeadElement currentHeadElement = null;
@@ -44,7 +41,7 @@ public final class ParsedXML {
         int currentCommentStart = 0;
         int currentCommentEnd = 0;
 
-        boolean elementElementTextIsInProcess = false;
+        boolean elementTextIsInProcess = false;
         StringBuilder currentElementText = null;
         int currentElementTextStart = 0;
         int currentElementTextEnd = 0;
@@ -56,7 +53,6 @@ public final class ParsedXML {
         Element currentParentElement = null;
 
         int currentElementStart = 0;
-        int currentElementEnd = 0;
 
         Stack<Element> processingElms = new Stack<>();
 
@@ -141,6 +137,12 @@ public final class ParsedXML {
                     currentCommentText = new StringBuilder();
                     currentCommentStart = i - 3;
                 }
+                if (elementTextIsInProcess) {
+                    elementTextIsInProcess = false;
+                    currentElementText = null;
+                    currentElementTextStart = 0;
+                    currentElementTextEnd = 0;
+                }
                 continue;
             }
 
@@ -164,7 +166,7 @@ public final class ParsedXML {
             }
 
             if (currentChar == '<') {
-                if (elementElementTextIsInProcess) {
+                if (elementTextIsInProcess) {
                     currentElementTextEnd = i - 1;
                     if (currentElement != null) {
                         currentElement.getTexts().add(
@@ -175,7 +177,7 @@ public final class ParsedXML {
                             )
                         );
                     }
-                    elementElementTextIsInProcess = false;
+                    elementTextIsInProcess = false;
                     currentElementText = null;
                     currentElementTextStart = 0;
                     currentElementTextEnd = 0;
@@ -200,8 +202,8 @@ public final class ParsedXML {
             }
 
             if (currentChar == '>') {
-                if (i + 1 < inputLength && !elementElementTextIsInProcess) {
-                    elementElementTextIsInProcess = true;
+                if (i + 1 < inputLength && !elementTextIsInProcess) {
+                    elementTextIsInProcess = true;
                     currentElementText = new StringBuilder();
                     currentElementTextStart = i + 1;
                 }
@@ -256,7 +258,7 @@ public final class ParsedXML {
                     currentCommentText.append(currentChar);
                     continue;
                 }
-                if (elementElementTextIsInProcess) {
+                if (elementTextIsInProcess) {
                     currentElementText.append(currentChar);
                     continue;
                 }
@@ -368,7 +370,7 @@ public final class ParsedXML {
                 continue;
             }
 
-            if (elementElementTextIsInProcess) {
+            if (elementTextIsInProcess) {
                 currentElementText.append(currentChar);
                 continue;
             }

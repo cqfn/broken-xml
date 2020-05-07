@@ -1,4 +1,4 @@
-package com.xml.fixer;
+package com.guseyn.broken_xml;
 
 public final class Text {
     private final int start;

@@ -1,4 +1,4 @@
-package com.xml.fixer;
+package com.guseyn.broken_xml;
 
 import java.util.ArrayList;
 import java.util.List;
