@@ -17,11 +17,11 @@ public final class XmlHeadElement {
     }
 
     public long getStart() {
-        return start;
+        return this.start;
     }
 
     public long getEnd() {
-        return end;
+        return this.end;
     }
 
     public List<Attribute> getAttributes() {

@@ -26,18 +26,18 @@ public final class Attribute {
     }
 
     public int getNameStart() {
-        return nameStart;
+        return this.nameStart;
     }
 
     public int getNameEnd() {
-        return nameEnd;
+        return this.nameEnd;
     }
 
     public int getValueStart() {
-        return valueStart;
+        return this.valueStart;
     }
 
     public int getValueEnd() {
-        return valueEnd;
+        return this.valueEnd;
     }
 }

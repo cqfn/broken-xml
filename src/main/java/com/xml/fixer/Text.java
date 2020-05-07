@@ -5,21 +5,21 @@ public final class Text {
     private final int end;
     private final String value;
 
-    public Text(final int start, final int end, final String text) {
+    public Text(final String text, final int start, final int end) {
         this.start = start;
         this.end = end;
         this.value = text;
     }
 
     public int getStart() {
-        return start;
+        return this.start;
     }
 
     public int getEnd() {
-        return end;
+        return this.end;
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 }

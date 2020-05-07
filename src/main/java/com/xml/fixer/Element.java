@@ -6,7 +6,7 @@ import java.util.List;
 public final class Element {
     private final List<Attribute> attributes;
     private final List<Element> children;
-    //private final Text text;
+    private final List<Text> texts;
     private final int start;
     private int end;
     private final String name;
@@ -15,6 +15,7 @@ public final class Element {
         this.start = start;
         this.attributes = new ArrayList<>();
         this.children = new ArrayList<>();
+        this.texts = new ArrayList<>();
         this.end = 0;
         this.name = name;
     }
@@ -32,11 +33,15 @@ public final class Element {
     }
 
     public List<Attribute> getAttributes() {
-        return attributes;
+        return this.attributes;
     }
 
     public List<Element> getChildren() {
-        return children;
+        return this.children;
+    }
+
+    public List<Text> getTexts() {
+        return this.texts;
     }
 
     void correctEnd(final int end) {

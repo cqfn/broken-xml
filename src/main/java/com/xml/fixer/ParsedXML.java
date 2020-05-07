@@ -40,11 +40,14 @@ public final class ParsedXML {
         int currentAttributeValueEnd = 0;
 
         boolean commentIsInProcess = false;
-        StringBuilder curCommentText = null;
+        StringBuilder currentCommentText = null;
         int currentCommentStart = 0;
         int currentCommentEnd = 0;
 
-        boolean elementTextIsInProcess = false;
+        boolean elementElementTextIsInProcess = false;
+        StringBuilder currentElementText = null;
+        int currentElementTextStart = 0;
+        int currentElementTextEnd = 0;
 
         int numberOfOpenBrackets = 0;
         int numberOfClosedBrackets = 0;
@@ -88,7 +91,95 @@ public final class ParsedXML {
                 continue;
             }
 
+
+            if (currentChar == '/' && i > 0 && chars[i - 1] == '<') {
+                continue;
+            }
+
+            if (currentChar == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
+                if (headElementIsInProcess) {
+                    currentHeadElementEnd = i + 1;
+                    currentHeadElement = new XmlHeadElement(
+                        currentHeadElementStart,
+                        currentHeadElementEnd,
+                        currentAttributes
+                    );
+                    document.getHeads().add(currentHeadElement);
+                    if (attributesIsInProcess) {
+                        attributesIsInProcess = false;
+                        currentAttributes = new ArrayList<>();
+                    }
+                    headElementIsInProcess = false;
+                    currentHeadElement = null;
+                    currentHeadElementStart = 0;
+                    currentHeadElementEnd = 0;
+                }
+                continue;
+            }
+
+            if (currentChar == 'x' && i > 1 && i < inputLength - 2 && chars[i + 1] == 'm' && chars[i + 2] == 'l' && chars[i - 1] == '?' && chars[i - 2] == '<') {
+                continue;
+            }
+
+            if (currentChar == 'm' && i > 2 && i < inputLength - 1 && chars[i + 1] == 'l' && chars[i - 1] == 'x' && chars[i - 2] == '?' && chars[i - 3] == '<') {
+                continue;
+            }
+
+            if (currentChar == 'l' && i > 3 && chars[i - 1] == 'm' && chars[i - 2] == 'x' && chars[i - 3] == '?' && chars[i - 4] == '<') {
+                headElementIsInProcess = true;
+                currentHeadElementStart = i - 4;
+                continue;
+            }
+
+            if (currentChar == '-' && i < inputLength - 1 && chars[i + 1] == '>') {
+                continue;
+            }
+
+            if (currentChar == '-' && i > 2 && chars[i - 1] == '-' && chars[i - 2] == '!' && chars[i - 3] == '<') {
+                if (!commentIsInProcess) {
+                    commentIsInProcess = true;
+                    currentCommentText = new StringBuilder();
+                    currentCommentStart = i - 3;
+                }
+                continue;
+            }
+
+            if (currentChar == '-' && i < inputLength - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
+                if (commentIsInProcess) {
+                    currentCommentEnd = i + 2;
+                    document.getComments().add(
+                        new Comment(
+                            currentCommentText.toString(),
+                            currentCommentStart,
+                            currentCommentEnd
+                        )
+                    );
+                    commentIsInProcess = false;
+                    currentCommentText = null;
+                    currentCommentStart = 0;
+                    currentCommentEnd = 0;
+                    continue;
+                }
+                continue;
+            }
+
             if (currentChar == '<') {
+                if (elementElementTextIsInProcess) {
+                    currentElementTextEnd = i - 1;
+                    if (currentElement != null) {
+                        currentElement.getTexts().add(
+                            new Text(
+                                currentElementText.toString(),
+                                currentElementTextStart,
+                                currentElementTextEnd
+                            )
+                        );
+                    }
+                    elementElementTextIsInProcess = false;
+                    currentElementText = null;
+                    currentElementTextStart = 0;
+                    currentElementTextEnd = 0;
+                }
                 if (!attributeValueIsInProcess && i < inputLength - 1) {
                     if (chars[i + 1] != '/') {
                         numberOfOpenBrackets += 1;
@@ -105,15 +196,14 @@ public final class ParsedXML {
                         }
                     }
                 }
-                if (elementTextIsInProcess) {
-                    elementTextIsInProcess = false;
-                }
                 continue;
             }
 
             if (currentChar == '>') {
-                if (i + 1 < inputLength && !elementTextIsInProcess) {
-                    elementTextIsInProcess = true;
+                if (i + 1 < inputLength && !elementElementTextIsInProcess) {
+                    elementElementTextIsInProcess = true;
+                    currentElementText = new StringBuilder();
+                    currentElementTextStart = i + 1;
                 }
                 if (currentOpeningElementName != null) {
                     currentElement = new Element(
@@ -157,84 +247,21 @@ public final class ParsedXML {
                 continue;
             }
 
-            if (currentChar == '/' && i > 0 && chars[i - 1] == '<') {
-                continue;
-            }
-
-            if (currentChar == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
-                if (headElementIsInProcess) {
-                    currentHeadElementEnd = i + 1;
-                    currentHeadElement = new XmlHeadElement(
-                        currentHeadElementStart,
-                        currentHeadElementEnd,
-                        currentAttributes
-                    );
-                    document.getHeads().add(currentHeadElement);
-                    if (attributesIsInProcess) {
-                        attributesIsInProcess = false;
-                        currentAttributes = new ArrayList<>();
-                    }
-                    headElementIsInProcess = false;
-                    currentHeadElement = null;
-                    currentHeadElementStart = 0;
-                    currentHeadElementEnd = 0;
-                }
-                continue;
-            }
-
-            if (currentChar == 'l' && i > 3 && chars[i - 1] == 'm' && chars[i - 2] == 'x' && chars[i - 3] == '?' && chars[i - 4] == '<') {
-                headElementIsInProcess = true;
-                currentHeadElementStart = i - 4;
-                continue;
-            }
-
-            if (currentChar == 'm' && i > 2 && i < inputLength - 1 && chars[i + 1] == 'l' && chars[i - 1] == 'x' && chars[i - 2] == '?' && chars[i - 3] == '<') {
-                continue;
-            }
-
-            if (currentChar == 'x' && i > 1 && i < inputLength - 2 && chars[i + 1] == 'm' && chars[i + 2] == 'l' && chars[i - 1] == '?' && chars[i - 2] == '<') {
-                continue;
-            }
-
-            if (currentChar == '-' && i < inputLength - 1 && chars[i + 1] == '>') {
-                continue;
-            }
-
-            if (currentChar == '-' && i > 2 && chars[i - 1] == '-' && chars[i - 2] == '!' && chars[i - 3] == '<') {
-                if (!commentIsInProcess) {
-                    commentIsInProcess = true;
-                    curCommentText = new StringBuilder();
-                    currentCommentStart = i - 3;
-                }
-                continue;
-            }
-
-            if (currentChar == '-' && i < inputLength - 2 && chars[i + 1] == '-' && chars[i + 2] == '>') {
-                if (commentIsInProcess) {
-                    currentCommentEnd = i + 2;
-                    document.getComments().add(
-                        new Comment(
-                            curCommentText.toString(),
-                            currentCommentStart,
-                            currentCommentEnd
-                        )
-                    );
-                    commentIsInProcess = false;
-                    curCommentText = null;
-                    currentCommentStart = 0;
-                    currentCommentEnd = 0;
-                    continue;
-                }
-                continue;
-            }
-
             if (isDelimiter(currentChar)) {
                 if (headElementIsInProcess) {
                     attributesIsInProcess = true;
                     continue;
                 }
                 if (commentIsInProcess) {
-                    curCommentText.append(currentChar);
+                    currentCommentText.append(currentChar);
+                    continue;
+                }
+                if (elementElementTextIsInProcess) {
+                    currentElementText.append(currentChar);
+                    continue;
+                }
+                if (attributeValueIsInProcess) {
+                    currentAttributeValue.append(currentChar);
                     continue;
                 }
                 if (openingElementNameIsInProcess) {
@@ -327,7 +354,7 @@ public final class ParsedXML {
             }
 
             if (commentIsInProcess) {
-                curCommentText.append(currentChar);
+                currentCommentText.append(currentChar);
                 continue;
             }
 
@@ -338,6 +365,11 @@ public final class ParsedXML {
 
             if (closingElementNameIsInProcess) {
                 currentClosingElementName.append(currentChar);
+                continue;
+            }
+
+            if (elementElementTextIsInProcess) {
+                currentElementText.append(currentChar);
                 continue;
             }
         }

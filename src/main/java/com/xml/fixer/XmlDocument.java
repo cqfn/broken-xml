@@ -19,11 +19,11 @@ public final class XmlDocument {
     }
 
     public int getStart() {
-        return start;
+        return this.start;
     }
 
     public int getEnd() {
-        return end;
+        return this.end;
     }
 
     public List<XmlHeadElement> getHeads() {

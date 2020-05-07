@@ -13,14 +13,14 @@ public final class Comment {
     }
 
     public int getStart() {
-        return start;
+        return this.start;
     }
 
     public int getEnd() {
-        return end;
+        return this.end;
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 }
