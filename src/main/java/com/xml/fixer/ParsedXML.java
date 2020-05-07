@@ -127,7 +127,6 @@ public class ParsedXML {
                 if (openingElementNameIsInProcess && currentElm != null && currentOpeningElememtName != null) {
                     currentElm.setName(currentOpeningElememtName.toString());
                     openingElementNameIsInProcess = false;
-                    attributesIsInProcess = true;
                     currentOpeningElememtName = null;
                     continue;
                 }
@@ -260,15 +259,6 @@ public class ParsedXML {
             }
 
             if (cur == '=') {
-                if (headElementIsInProcess) {
-                    if (attributesIsInProcess) {
-                        if (attributeNameIsInProcess) {
-                            attributeNameIsInProcess = false;
-                            currentAttributeNameEnd = i - 1;
-                        }
-                    }
-                    continue;
-                }
                 if (attributesIsInProcess) {
                     if (attributeNameIsInProcess) {
                         attributeNameIsInProcess = false;
@@ -280,37 +270,6 @@ public class ParsedXML {
             }
 
             if (isQuote(cur)) {
-                if (headElementIsInProcess) {
-                    if (attributesIsInProcess) {
-                        if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
-                            attributeValueIsInProcess = true;
-                            currentAttributeValue = new StringBuilder();
-                            currentAttributeValueStart = i + 1;
-                            continue;
-                        }
-                        if (attributeValueIsInProcess) {
-                            attributeValueIsInProcess = false;
-                            currentAttributeValueEnd = i - 1;
-                            currentAttributes.add(
-                                new Attribute(
-                                    currentAttributeName.toString(),
-                                    currentAttributeValue.toString(),
-                                    currentAttributeNameStart,
-                                    currentAttributeNameEnd,
-                                    currentAttributeValueStart,
-                                    currentAttributeValueEnd
-                                )
-                            );
-                            currentAttributeName = null;
-                            currentAttributeValue = null;
-                            currentAttributeNameStart = 0;
-                            currentAttributeNameEnd = 0;
-                            currentAttributeValueStart = 0;
-                            currentAttributeValueEnd = 0;
-                            continue;
-                        }
-                    }
-                }
                 if (attributesIsInProcess) {
                     if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
                         attributeValueIsInProcess = true;
@@ -337,27 +296,6 @@ public class ParsedXML {
                         currentAttributeNameEnd = 0;
                         currentAttributeValueStart = 0;
                         currentAttributeValueEnd = 0;
-                        continue;
-                    }
-                }
-                continue;
-            }
-
-            if (headElementIsInProcess) {
-                if (attributesIsInProcess) {
-                    if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
-                        attributeNameIsInProcess = true;
-                        currentAttributeName = new StringBuilder();
-                        currentAttributeNameStart = i;
-                        currentAttributeName.append(cur);
-                        continue;
-                    }
-                    if (attributeNameIsInProcess && !attributeValueIsInProcess) {
-                        currentAttributeName.append(cur);
-                        continue;
-                    }
-                    if (attributeValueIsInProcess) {
-                        currentAttributeValue.append(cur);
                         continue;
                     }
                 }
@@ -412,13 +350,5 @@ public class ParsedXML {
 
     private boolean isQuote(char c) {
         return c == '\'' || c == '\"';
-    }
-
-    private boolean isXMLChar(char c) {
-        return c == 'x' || c == 'm' || c == 'l';
-    }
-
-    private boolean isValidAttrNameChar(char c) {
-        return Character.isLetterOrDigit(c) || c == '_' || c == '.';
     }
 }
