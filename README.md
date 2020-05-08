@@ -169,12 +169,12 @@ public class EmptyXml {
 }
 ```
 
-### Duplicated attributes in elements
+### Duplicate attributes in elements
 
-It does not matter anymore if elements in your xml have duplicated attribute names, **Broken XML** will return a list of them:
+It does not matter anymore if elements in your xml have duplicate attribute names, **Broken XML** will return a list of them:
 
 ```java
-public class DuplicatedElements {
+public class DuplicateAttributesInElement {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<elm attr="value1" attr="value2"></elm>");
