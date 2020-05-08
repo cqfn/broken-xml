@@ -157,7 +157,7 @@ public class EmptyXml {
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
 
 ```java
-public class EmptyXml {
+public class MultipleRoots {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
