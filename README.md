@@ -124,7 +124,7 @@ public class Main {
   
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value()
-  Comment element = doc.comments().get(0)
+  Comment comment = doc.comments().get(0)
   // Components:
   String text = comment.text();
   int start = comment.start();
