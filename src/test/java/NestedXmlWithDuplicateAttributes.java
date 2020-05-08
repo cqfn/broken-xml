@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class NestedXmlWithDuplicatedAttributes extends XmlTest  {
+public class NestedXmlWithDuplicateAttributes extends XmlTest  {
 
     @Test
     @Override
