@@ -149,6 +149,23 @@ public class EmptyXml {
 }
 ```
 
+### XML that is wrapped with some other text
+
+**Broken XML** allows you to have xml text with no xml stuff, in such case it will return information only about xml part:
+
+```java
+public class NoXmlAroundXml {
+    @Test
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML("Some text here<root attr="value">text</root>and some text here");
+        XmlDocument doc = xml.value();
+        assertEquals(doc.roots().size(), 1);
+        assertEquals(doc.roots().get(0).name(), "root");
+        assertEquals(doc.roots().get(0).texts().get(0).value(), "text");
+    }
+}
+```
+
 ### Multiple roots
 
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
