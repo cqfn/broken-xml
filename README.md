@@ -149,7 +149,7 @@ public class EmptyXml {
 }
 ```
 
-## Multiple roots
+### Multiple roots
 
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
 
