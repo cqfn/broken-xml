@@ -19,7 +19,7 @@ public class Main {
         List<HeadElement> heads = doc.heads(); 
         // You can get multiple roots
         List<Element> roots = doc.roots();
-        // You can get even comments in your xml
+        // You can even get comments in your xml
         List<Comment> comments = doc.comments();
     }
 }
@@ -34,13 +34,10 @@ public class Main {
   
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value();
-  // You can get list of head elements, if for some reason you have several of them
+  // Components:
   List<HeadElement> heads = doc.heads();
-  // You can get multiple roots
   List<Element> roots = doc.roots();
-  // You can even get comments in your xml
   List<Comment> comments = doc.comments();
-  // Also you can get start and end position of your doc
   int start = doc.start(); // is always 0
   int end = doc.end(); // is always a length of xml string
 ```
