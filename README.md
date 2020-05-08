@@ -132,3 +132,61 @@ public class Main {
 ```
 </details>
 
+## How broken is your XML?
+
+### Empty xml
+
+If you have an empty xml, no problem, you'll get just empty `XmlDocument`:
+
+```java
+public class EmptyXml {
+    @Test
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML("");
+        XmlDocument doc = xml.value();
+        assertEquals(doc.heads().size(), 0);
+        assertEquals(doc.roots().size(), 0);
+        assertEquals(doc.start(), 0);
+        assertEquals(doc.end(), 0);
+    }
+}
+```
+
+## Multiple roots
+
+Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a List:
+
+```java
+public class EmptyXml {
+    @Test
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
+        XmlDocument doc = xml.value();
+        assertEquals(doc.roots().size(), 2);
+        assertEquals(doc.roots().get(0).name(), "root1");
+        assertEquals(doc.roots().get(1).name(), "root2");
+    }
+}
+```
+
+### Duplicated attributes in elements
+
+It does not matter anymore if elements in your xml have duplicated attribute names, **Broken XML** will return a list of them:
+
+```java
+public class DuplicatedElements {
+    @Test
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML("<elm attr="value1" attr="value2"></elm>");
+        XmlDocument doc = xml.value();
+        Element element = doc.roots().get(0);
+        assertEquals(element.attributes().size(), 2);
+        assertEquals(element.attributes().get(0).name(), "attr");
+        assertEquals(element.attributes().get(0).value(), "value1");
+        assertEquals(element.attributes().get(1).name(), "attr");
+        assertEquals(element.attributes().get(1).value(), "value2");
+    }
+}
+```
+
+...to be continued
