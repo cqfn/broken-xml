@@ -25,7 +25,7 @@ public class Main {
 }
 ```
 
-## Structure
+### Structure
 
 <details>
   <summary><b>XmlDocument</b></summary><br>
