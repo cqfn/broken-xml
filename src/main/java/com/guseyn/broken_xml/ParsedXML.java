@@ -18,7 +18,7 @@ public final class ParsedXML {
         final char[] chars = xml.toCharArray();
 
         boolean headElementIsInProcess = false;
-        XmlHeadElement currentHeadElement = null;
+        HeadElement currentHeadElement = null;
         int currentHeadElementStart = 0;
         int currentHeadElementEnd = 0;
 
@@ -94,7 +94,7 @@ public final class ParsedXML {
             if (currentChar == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
                 if (headElementIsInProcess) {
                     currentHeadElementEnd = i + 1;
-                    currentHeadElement = new XmlHeadElement(
+                    currentHeadElement = new HeadElement(
                         currentHeadElementStart,
                         currentHeadElementEnd,
                         currentAttributes

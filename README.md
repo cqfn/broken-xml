@@ -16,7 +16,7 @@ public class Main {
     static void main(String[] args){ 
         XmlDocument doc = new ParsedXML("<xml>...</xml>").value();
         // You can get list of head elements, if for some reason you have several of them
-        List<XmlHeadElement> heads = doc.heads(); 
+        List<HeadElement> heads = doc.heads(); 
         // You can get multiple roots
         List<Element> roots = doc.roots();
         // You can get even comments in your xml
@@ -35,7 +35,7 @@ public class Main {
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value();
   // You can get list of head elements, if for some reason you have several of them
-  List<XmlHeadElement> heads = doc.heads();
+  List<HeadElement> heads = doc.heads();
   // You can get multiple roots
   List<Element> roots = doc.roots();
   // You can even get comments in your xml
@@ -47,13 +47,13 @@ public class Main {
 </details>
 
 <details>
-  <summary><b>XmlHeadElement</b></summary><br>
+  <summary><b>HeadElement</b></summary><br>
   
-  **XmlHeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
+  **HeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
   
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value();
-  XmlHeadElement head = doc.heads().get(0);
+  HeadElement head = doc.heads().get(0);
   // Components:
   List<Attribute> attributes = head.attributes();
   int start = element.start();
@@ -83,7 +83,7 @@ public class Main {
 <details>
   <summary><b>Attribute</b></summary><br>
   
-  **Attribute** can be either a component of `XmlHeadElement` or `Element`.
+  **Attribute** can be either a component of `HeadElement` or `Element`.
   
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value();
@@ -107,7 +107,7 @@ public class Main {
   
   ```java
   XmlDocument doc = new ParsedXML(xmlAsString).value()
-  XmlHeadElement element = doc.heads().get(0)
+  HeadElement element = doc.heads().get(0)
   Element element = doc.roots().get(0)
   Text text = element.texts().get(0) 
   // Components:

@@ -6,7 +6,7 @@ import java.util.List;
 public final class XmlDocument {
     private final int start;
     private final int end;
-    private final List<XmlHeadElement> xmlHeads;
+    private final List<HeadElement> xmlHeads;
     private final List<Comment> comments;
     private final List<Element> roots;
 
@@ -26,7 +26,7 @@ public final class XmlDocument {
         return this.end;
     }
 
-    public List<XmlHeadElement> heads() {
+    public List<HeadElement> heads() {
         return this.xmlHeads;
     }
 

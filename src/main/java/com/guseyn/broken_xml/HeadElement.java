@@ -2,12 +2,12 @@ package com.guseyn.broken_xml;
 
 import java.util.List;
 
-public final class XmlHeadElement {
+public final class HeadElement {
     private final long start;
     private final long end;
     private final List<Attribute> attributes;
 
-    XmlHeadElement(
+    HeadElement(
         final long start,
         final long end,
         final List<Attribute> attributes) {

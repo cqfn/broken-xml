@@ -1,11 +1,11 @@
 import com.guseyn.broken_xml.Attribute;
-import com.guseyn.broken_xml.XmlHeadElement;
+import com.guseyn.broken_xml.HeadElement;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class XmlTestUtils {
 
-    public static void assertXmlHead(XmlHeadElement head, String version) {
+    public static void assertXmlHead(HeadElement head, String version) {
         List<Attribute> attributes = head.attributes();
         assertEquals(attributes.size(), 3);
         Attribute firstAttribute = attributes.get(0);
