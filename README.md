@@ -157,7 +157,7 @@ public class EmptyXml {
 public class NoXmlAroundXml {
     @Test
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML("Some text here<root attr="value">text</root>and some text here");
+        final ParsedXML xml = new ParsedXML("Some text here<root attr=\"value\">text</root>and some text here");
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 1);
         assertEquals(document.roots().get(0).name(), "root");
