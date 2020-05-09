@@ -19,7 +19,7 @@ public class Main {
         List<HeadElement> heads = document.heads(); 
         // You can get multiple roots
         List<Element> roots = document.roots();
-        // You can get even comments in your xml
+        // You can even get comments in your xml
         List<Comment> comments = document.comments();
     }
 }
@@ -33,12 +33,10 @@ public class Main {
   **XmlDocument** is what you get by calling `new ParsedXML(xmlAsString).document()`.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document();
-  // You can get list of head elements, if for some reason you have several of them
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  // Components:
   List<HeadElement> heads = document.heads();
-  // You can get multiple roots
   List<Element> roots = document.roots();
-  // You can even get comments in your xml
   List<Comment> comments = document.comments();
   int start = document.start(); // is always 0
   int end = document.end(); // is always a length of xml string
@@ -51,7 +49,7 @@ public class Main {
   **HeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document();
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
   HeadElement head = document.heads().get(0);
   // Components:
   List<Attribute> attributes = head.attributes();
@@ -66,7 +64,7 @@ public class Main {
   **Element** can be either a root or just a child node in xml.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document();
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
   Element element = document.roots().get(0); // can be aslo retrieved from another element via children() method
   // Components:
   String name = element.name();
@@ -85,7 +83,7 @@ public class Main {
   **Attribute** can be either a component of `HeadElement` or `Element`.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document();
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
   Element element = document.roots().get(0);
   Attribute attribute = element.attributes().get(0); 
   // Components:
@@ -105,8 +103,8 @@ public class Main {
   **Text** is a component of `Element`.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document()
-  HeadElement element = document.heads().get(0)
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  HeadElement element = document.heads().get(0);
   Element element = document.roots().get(0)
   Text text = element.texts().get(0) 
   // Components:
@@ -122,8 +120,8 @@ public class Main {
   **Comment** is a component of `XmlDocument`.
   
   ```java
-  XmlDocument document = new ParsedXML(xmlAsString).document()
-  Comment comment = document.comments().get(0)
+  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  Comment comment = document.comments().get(0);
   // Components:
   String text = comment.text();
   int start = comment.start();
@@ -151,12 +149,29 @@ public class EmptyXml {
 }
 ```
 
-## Multiple roots
+### XML that is wrapped with some other text
+
+**Broken XML** allows you to have xml text with no xml stuff, in such case it will return information only about xml part:
+
+```java
+public class NoXmlAroundXml {
+    @Test
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML("Some text here<root attr="value">text</root>and some text here");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.roots().get(0).name(), "root");
+        assertEquals(document.roots().get(0).texts().get(0).value(), "text");
+    }
+}
+```
+
+### Multiple roots
 
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
 
 ```java
-public class EmptyXml {
+public class MultipleRoots {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
@@ -176,7 +191,7 @@ It does not matter anymore if elements in your xml have duplicate attribute name
 public class DuplicateAttributesInElement {
     @Test
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML("<elm attr="value1" attr="value2"></elm>");
+        final ParsedXML xml = new ParsedXML("<elm attr=\"value1\" attr=\"value2\"></elm>");
         XmlDocument document = xml.document();
         Element element = document.roots().get(0);
         assertEquals(element.attributes().size(), 2);
