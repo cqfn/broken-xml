@@ -14,13 +14,13 @@ by any normal human being. But if you're lucky like myself, just read further...
 ```java
 public class Main {
     static void main(String[] args){ 
-        XmlDocument doc = new ParsedXML("<xml>...</xml>").value();
+        XmlDocument document = new ParsedXML("<xml>...</xml>").document();
         // You can get list of head elements, if for some reason you have several of them
-        List<HeadElement> heads = doc.heads(); 
+        List<HeadElement> heads = document.heads(); 
         // You can get multiple roots
-        List<Element> roots = doc.roots();
+        List<Element> roots = document.roots();
         // You can get even comments in your xml
-        List<Comment> comments = doc.comments();
+        List<Comment> comments = document.comments();
     }
 }
 ```
@@ -30,19 +30,18 @@ public class Main {
 <details>
   <summary><b>XmlDocument</b></summary><br>
   
-  **XmlDocument** is what you get by calling `new ParsedXML(xmlAsString).value()`.
+  **XmlDocument** is what you get by calling `new ParsedXML(xmlAsString).document()`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   // You can get list of head elements, if for some reason you have several of them
-  List<HeadElement> heads = doc.heads();
+  List<HeadElement> heads = document.heads();
   // You can get multiple roots
-  List<Element> roots = doc.roots();
+  List<Element> roots = document.roots();
   // You can even get comments in your xml
-  List<Comment> comments = doc.comments();
-  // Also you can get start and end position of your doc
-  int start = doc.start(); // is always 0
-  int end = doc.end(); // is always a length of xml string
+  List<Comment> comments = document.comments();
+  int start = document.start(); // is always 0
+  int end = document.end(); // is always a length of xml string
 ```
 </details>
 
@@ -52,8 +51,8 @@ public class Main {
   **HeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value();
-  HeadElement head = doc.heads().get(0);
+  XmlDocument document = new ParsedXML(xmlAsString).document();
+  HeadElement head = document.heads().get(0);
   // Components:
   List<Attribute> attributes = head.attributes();
   int start = element.start();
@@ -67,8 +66,8 @@ public class Main {
   **Element** can be either a root or just a child node in xml.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value();
-  Element element = doc.roots().get(0); // can be aslo retrieved from another element via children() method
+  XmlDocument document = new ParsedXML(xmlAsString).document();
+  Element element = document.roots().get(0); // can be aslo retrieved from another element via children() method
   // Components:
   String name = element.name();
   List<Attribute> attributes = element.attributes();
@@ -86,8 +85,8 @@ public class Main {
   **Attribute** can be either a component of `HeadElement` or `Element`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value();
-  Element element = doc.roots().get(0);
+  XmlDocument document = new ParsedXML(xmlAsString).document();
+  Element element = document.roots().get(0);
   Attribute attribute = element.attributes().get(0); 
   // Components:
   String name = attribute.name();
@@ -106,9 +105,9 @@ public class Main {
   **Text** is a component of `Element`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value()
-  HeadElement element = doc.heads().get(0)
-  Element element = doc.roots().get(0)
+  XmlDocument document = new ParsedXML(xmlAsString).document()
+  HeadElement element = document.heads().get(0)
+  Element element = document.roots().get(0)
   Text text = element.texts().get(0) 
   // Components:
   String value = text.value();
@@ -123,8 +122,8 @@ public class Main {
   **Comment** is a component of `XmlDocument`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).value()
-  Comment comment = doc.comments().get(0)
+  XmlDocument document = new ParsedXML(xmlAsString).document()
+  Comment comment = document.comments().get(0)
   // Components:
   String text = comment.text();
   int start = comment.start();
@@ -143,11 +142,11 @@ public class EmptyXml {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("");
-        XmlDocument doc = xml.value();
-        assertEquals(doc.heads().size(), 0);
-        assertEquals(doc.roots().size(), 0);
-        assertEquals(doc.start(), 0);
-        assertEquals(doc.end(), 0);
+        XmlDocument document = xml.document();
+        assertEquals(document.heads().size(), 0);
+        assertEquals(document.roots().size(), 0);
+        assertEquals(document.start(), 0);
+        assertEquals(document.end(), 0);
     }
 }
 ```
@@ -161,10 +160,10 @@ public class EmptyXml {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
-        XmlDocument doc = xml.value();
-        assertEquals(doc.roots().size(), 2);
-        assertEquals(doc.roots().get(0).name(), "root1");
-        assertEquals(doc.roots().get(1).name(), "root2");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 2);
+        assertEquals(document.roots().get(0).name(), "root1");
+        assertEquals(document.roots().get(1).name(), "root2");
     }
 }
 ```
@@ -178,8 +177,8 @@ public class DuplicateAttributesInElement {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<elm attr="value1" attr="value2"></elm>");
-        XmlDocument doc = xml.value();
-        Element element = doc.roots().get(0);
+        XmlDocument document = xml.document();
+        Element element = document.roots().get(0);
         assertEquals(element.attributes().size(), 2);
         assertEquals(element.attributes().get(0).name(), "attr");
         assertEquals(element.attributes().get(0).value(), "value1");

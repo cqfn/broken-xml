@@ -9,26 +9,26 @@ public class Comments extends XmlTest {
     @Override
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("comments.xml"));
-        XmlDocument doc = xml.value();
-        assertEquals(doc.comments().size(), 5);
-        assertEquals(doc.comments().get(0).text(), "");
-        assertEquals(doc.comments().get(0).start(), 0);
-        assertEquals(doc.comments().get(0).end(), 6);
+        XmlDocument document = xml.document();
+        assertEquals(document.comments().size(), 5);
+        assertEquals(document.comments().get(0).text(), "");
+        assertEquals(document.comments().get(0).start(), 0);
+        assertEquals(document.comments().get(0).end(), 6);
 
-        assertEquals(doc.comments().get(1).text(), " ");
-        assertEquals(doc.comments().get(1).start(), 8);
-        assertEquals(doc.comments().get(1).end(), 15);
+        assertEquals(document.comments().get(1).text(), " ");
+        assertEquals(document.comments().get(1).start(), 8);
+        assertEquals(document.comments().get(1).end(), 15);
 
-        assertEquals(doc.comments().get(2).text(), "some text");
-        assertEquals(doc.comments().get(2).start(), 17);
-        assertEquals(doc.comments().get(2).end(), 32);
+        assertEquals(document.comments().get(2).text(), "some text");
+        assertEquals(document.comments().get(2).start(), 17);
+        assertEquals(document.comments().get(2).end(), 32);
 
-        assertEquals(doc.comments().get(3).text(), "sometext");
-        assertEquals(doc.comments().get(3).start(), 34);
-        assertEquals(doc.comments().get(3).end(), 48);
+        assertEquals(document.comments().get(3).text(), "sometext");
+        assertEquals(document.comments().get(3).start(), 34);
+        assertEquals(document.comments().get(3).end(), 48);
 
-        assertEquals(doc.comments().get(4).text(), "\\n");
-        assertEquals(doc.comments().get(4).start(), 50);
-        assertEquals(doc.comments().get(4).end(), 58);
+        assertEquals(document.comments().get(4).text(), "\\n");
+        assertEquals(document.comments().get(4).start(), 50);
+        assertEquals(document.comments().get(4).end(), 58);
     }
 }

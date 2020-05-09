@@ -16,7 +16,7 @@ public class XmlTestUtils {
         assertEquals(secondAttribute.name(), "encoding");
         assertEquals(secondAttribute.value(), "UTF-8");
         assertEquals(thirdAttribute.name(), "attribute");
-        assertEquals(thirdAttribute.value(), "value");
+        assertEquals(thirdAttribute.value(), "document");
     }
 
 }

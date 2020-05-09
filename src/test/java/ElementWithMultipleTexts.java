@@ -11,12 +11,12 @@ public class ElementWithMultipleTexts extends XmlTest {
     @Override
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("element-with-multiple-texts.xml"));
-        XmlDocument doc = xml.value();
-        assertEquals(doc.start(), 0);
-        assertEquals(doc.end(), 115);
-        assertEquals(doc.roots().size(), 1);
+        XmlDocument document = xml.document();
+        assertEquals(document.start(), 0);
+        assertEquals(document.end(), 115);
+        assertEquals(document.roots().size(), 1);
 
-        List<Element> elements = doc.roots().get(0).children();
+        List<Element> elements = document.roots().get(0).children();
         assertEquals(elements.size(), 1);
         Element element = elements.get(0);
 

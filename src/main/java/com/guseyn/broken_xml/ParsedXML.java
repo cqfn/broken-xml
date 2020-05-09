@@ -12,7 +12,7 @@ public final class ParsedXML {
         this.xml = xml;
     }
 
-    public XmlDocument value() {
+    public XmlDocument document() {
 
         final int inputLength = xml.length();
         final char[] chars = xml.toCharArray();

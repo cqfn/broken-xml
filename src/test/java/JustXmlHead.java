@@ -8,8 +8,8 @@ public class JustXmlHead extends XmlTest{
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("single-xml-head.xml"));
-        XmlDocument doc = xml.value();
-        assertEquals(doc.heads().size(), 1);
-        XmlTestUtils.assertXmlHead(doc.heads().get(0), "1.0");
+        XmlDocument document = xml.document();
+        assertEquals(document.heads().size(), 1);
+        XmlTestUtils.assertXmlHead(document.heads().get(0), "1.0");
     }
 }

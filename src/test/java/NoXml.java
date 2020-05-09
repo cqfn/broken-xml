@@ -4,15 +4,15 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class EmptyXml extends XmlTest {
+public class NoXml extends XmlTest {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("empty.xml"));
+        final ParsedXML xml = new ParsedXML(dataByPath("no-xml.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 0);
         assertEquals(document.roots().size(), 0);
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 1);
+        assertEquals(document.end(), 25);
     }
 }
