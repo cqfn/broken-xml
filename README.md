@@ -33,7 +33,7 @@ public class Main {
   **XmlDocument** is what you get by calling `new ParsedXML(xmlAsString).document()`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   // Components:
   List<HeadElement> heads = document.heads();
   List<Element> roots = document.roots();
@@ -49,7 +49,7 @@ public class Main {
   **HeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   HeadElement head = document.heads().get(0);
   // Components:
   List<Attribute> attributes = head.attributes();
@@ -64,7 +64,7 @@ public class Main {
   **Element** can be either a root or just a child node in xml.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   Element element = document.roots().get(0); // can be aslo retrieved from another element via children() method
   // Components:
   String name = element.name();
@@ -83,7 +83,7 @@ public class Main {
   **Attribute** can be either a component of `HeadElement` or `Element`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   Element element = document.roots().get(0);
   Attribute attribute = element.attributes().get(0); 
   // Components:
@@ -103,7 +103,7 @@ public class Main {
   **Text** is a component of `Element`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   HeadElement element = document.heads().get(0);
   Element element = document.roots().get(0)
   Text text = element.texts().get(0) 
@@ -120,7 +120,7 @@ public class Main {
   **Comment** is a component of `XmlDocument`.
   
   ```java
-  XmlDocument doc = new ParsedXML(xmlAsString).document();
+  XmlDocument document = new ParsedXML(xmlAsString).document();
   Comment comment = document.comments().get(0);
   // Components:
   String text = comment.text();
