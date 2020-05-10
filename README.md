@@ -219,7 +219,7 @@ text2
 It's not a problem, you'll get properly parsed attribute values:
 
 ```java
-public class DifferentTypeOfOpeningAndClosingQuotesForAttributeValues {
+public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValues {
     @Test
     @Override
     public void test() throws IOException {

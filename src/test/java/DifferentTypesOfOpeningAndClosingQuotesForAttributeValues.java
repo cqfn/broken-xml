@@ -4,11 +4,12 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class DifferentTypeOfOpeningAndClosingQuotesForAttributeValues extends XmlTest  {
+public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValues extends XmlTest  {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("different-type-of-opening-and-closing-quotes-for-attribute-values.xml"));
+        final ParsedXML xml = new ParsedXML(dataByPath(
+            "different-types-of-opening-and-closing-quotes-for-attribute-values.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
         assertEquals(document.end(), 74);
