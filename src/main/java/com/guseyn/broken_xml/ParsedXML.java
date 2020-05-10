@@ -165,6 +165,10 @@ public final class ParsedXML {
             }
 
             if (currentChar == '<') {
+                if (commentIsInProcess) {
+                    currentCommentText.append(currentChar);
+                    continue;
+                }
                 if (elementTextIsInProcess) {
                     currentElementTextEnd = i - 1;
                     if (currentElement != null) {
@@ -201,6 +205,10 @@ public final class ParsedXML {
             }
 
             if (currentChar == '>') {
+                if (commentIsInProcess) {
+                    currentCommentText.append(currentChar);
+                    continue;
+                }
                 if (i + 1 < inputLength && !elementTextIsInProcess) {
                     elementTextIsInProcess = true;
                     currentElementText = new StringBuilder();

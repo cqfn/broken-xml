@@ -18,7 +18,7 @@ public class SingleRoot extends XmlTest {
         assertEquals(document.roots().get(0).end(), 33);
         assertEquals(document.roots().get(0).attributes().size(), 1);
         assertEquals(document.roots().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).attributes().get(0).nameStart(), 6);
         assertEquals(document.roots().get(0).attributes().get(0).nameEnd(), 9);
         assertEquals(document.roots().get(0).attributes().get(0).valueStart(), 12);

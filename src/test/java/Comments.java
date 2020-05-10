@@ -19,16 +19,16 @@ public class Comments extends XmlTest {
         assertEquals(document.comments().get(1).start(), 8);
         assertEquals(document.comments().get(1).end(), 15);
 
-        assertEquals(document.comments().get(2).text(), "some text");
+        assertEquals(document.comments().get(2).text(), "some><>< text");
         assertEquals(document.comments().get(2).start(), 17);
-        assertEquals(document.comments().get(2).end(), 32);
+        assertEquals(document.comments().get(2).end(), 36);
 
         assertEquals(document.comments().get(3).text(), "sometext");
-        assertEquals(document.comments().get(3).start(), 34);
-        assertEquals(document.comments().get(3).end(), 48);
+        assertEquals(document.comments().get(3).start(), 38);
+        assertEquals(document.comments().get(3).end(), 52);
 
         assertEquals(document.comments().get(4).text(), "\\n");
-        assertEquals(document.comments().get(4).start(), 50);
-        assertEquals(document.comments().get(4).end(), 58);
+        assertEquals(document.comments().get(4).start(), 54);
+        assertEquals(document.comments().get(4).end(), 62);
     }
 }

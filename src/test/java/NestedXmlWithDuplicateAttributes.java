@@ -17,44 +17,44 @@ public class NestedXmlWithDuplicateAttributes extends XmlTest  {
         assertEquals(document.roots().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "value");
 
         assertEquals(document.roots().get(0).children().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
 
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
 
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
 
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
 
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
-        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "document");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).texts().get(0).value(), "text");
     }
 }
