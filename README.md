@@ -203,4 +203,39 @@ public class DuplicateAttributesInElement {
 }
 ```
 
+### Different types of opening and closing quotes for attribute values
+
+If your values of attributes are wrapped with different opening and closing quotes like in following xml:
+
+```xml
+<root attr1='value1">
+  text1
+</root>
+<root attr2="value2'>
+text2
+</root>
+```
+
+It's not a problem, you'll get properly parsed attribute values:
+
+```java
+public class DifferentTypeOfOpeningAndClosingQuotesForAttributeValues {
+    @Test
+    @Override
+    public void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.start(), 0);
+        assertEquals(document.end(), 74);
+        assertEquals(document.roots().size(), 2);
+        assertEquals(document.roots().get(0).attributes().size(), 1);
+        assertEquals(document.roots().get(0).attributes().get(0).name(), "attr1");
+        assertEquals(document.roots().get(0).attributes().get(0).value(), "value1");
+        assertEquals(document.roots().get(1).attributes().size(), 1);
+        assertEquals(document.roots().get(1).attributes().get(0).name(), "attr2");
+        assertEquals(document.roots().get(1).attributes().get(0).value(), "value2");
+    }
+}
+```
+
 ...to be continued
