@@ -209,6 +209,9 @@ public final class ParsedXML {
                     currentCommentText.append(currentChar);
                     continue;
                 }
+                if (elementTextIsInProcess) {
+                    currentElementText.append(currentChar);
+                }
                 if (i + 1 < inputLength && !elementTextIsInProcess) {
                     elementTextIsInProcess = true;
                     currentElementText = new StringBuilder();

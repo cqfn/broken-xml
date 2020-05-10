@@ -1,9 +1,9 @@
 <root attr="value">
-  <elm>
+  <elm>>
     text1
-    <child></child>
+    <child></child>>
     text2
-    <child></child>
+    <child></child>>
     text3
   </elm>
 </root>

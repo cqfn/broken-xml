@@ -13,7 +13,7 @@ public class ElementWithMultipleTexts extends XmlTest {
         final ParsedXML xml = new ParsedXML(dataByPath("element-with-multiple-texts.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 115);
+        assertEquals(document.end(), 118);
         assertEquals(document.roots().size(), 1);
 
         List<Element> elements = document.roots().get(0).children();
@@ -23,18 +23,18 @@ public class ElementWithMultipleTexts extends XmlTest {
         assertEquals(element.texts().size(), 3);
 
         assertEquals(element.texts().get(0).start(), 27);
-        assertEquals(element.texts().get(0).end(), 41);
-        assertEquals(element.texts().get(0).value(), "\n    text1\n    ");
-        assertEquals(element.texts().get(0).value().length() - 1, 41 - 27);
+        assertEquals(element.texts().get(0).end(), 42);
+        assertEquals(element.texts().get(0).value(), ">\n    text1\n    ");
+        assertEquals(element.texts().get(0).value().length() - 1, 42 - 27);
 
-        assertEquals(element.texts().get(1).start(), 57);
-        assertEquals(element.texts().get(1).end(), 71);
-        assertEquals(element.texts().get(1).value(), "\n    text2\n    ");
-        assertEquals(element.texts().get(1).value().length() - 1, 71 - 57);
+        assertEquals(element.texts().get(1).start(), 58);
+        assertEquals(element.texts().get(1).end(), 73);
+        assertEquals(element.texts().get(1).value(), ">\n    text2\n    ");
+        assertEquals(element.texts().get(1).value().length() - 1, 73 - 58);
 
-        assertEquals(element.texts().get(2).start(), 87);
-        assertEquals(element.texts().get(2).end(), 99);
-        assertEquals(element.texts().get(2).value(), "\n    text3\n  ");
-        assertEquals(element.texts().get(2).value().length() - 1, 99 - 87);
+        assertEquals(element.texts().get(2).start(), 89);
+        assertEquals(element.texts().get(2).end(), 102);
+        assertEquals(element.texts().get(2).value(), ">\n    text3\n  ");
+        assertEquals(element.texts().get(2).value().length() - 1, 102 - 89);
     }
 }
