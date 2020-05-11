@@ -8,7 +8,7 @@ cache:
   - "$HOME/.m2"
 install: true
 script: |-
-  mvn clean install
+  mvn clean install || travis_terminate 1
   log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
 branches:
   only:
