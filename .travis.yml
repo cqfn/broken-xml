@@ -20,18 +20,16 @@ before_deploy: |-
   mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
   export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 deploy:
-  provider: releases
-  api_key:
-    secure: BN1yM8gFuzh6PGnY73DcxwhOQ+UqQR+6sNVgEYDkZ3S725MG0+hqo/vuDju+UU7RuYKXhHEo7AiK8QkVEf6KOrNSp6gDdPXzJ+Y0G5K1wY/4YAoQWB3qFpOXUL1FCH6p65bgJQ3CzGncVmsupYCcxqNMxqTbEqwPwPtPukdWvOjbxkB+PhEnhhKQxnB8xLpW5xRfWi1yKChCMAD+AaKkR9jW+eK8ZT4YJzNwrxs3w/LoN/NKoZircOZ3KGp+GqIqz/1qcma+U6aF1ovNVg7LQjnEjyOPX+Th6oLMdmuKx0CTh6wyTjKaD58JdXbtJ3vDtdH65ghDsQtp7ea6dywGlotypamCvDMFgPeQHEy9jlz5zr7j+ePyZKAi+aDVozs0/sA8BSOnhRzJLhpPL261ZOn6WcWq7h1w8w7whdi+lVn+S7CHzZgOFXm+hnJXgOnGJ57AgijNhHiVhZi4zvDHBVhVVw1jFLn9c4CXfpnVOUR/XENaRWO6J2ts0DoNEpqpTxoZPZlE4mxzvOPTDbG4Wu/fBISy/CRvO48PX8tmkXQZIlUjSiQN+An+zOZBwBEohZn5n8H3z3aIkiC6WWM7k/G4E9jg3OfE0dYKihaxuaX6N5GjnsEh5yPCm5caQjZM2oRYOnNsNPlGW3VmZVO5vdJ5SVxoMQa0Ei3j8JoJ740=
-  file:
-    - README.md
-    - target/broken-xml-$project_version.jar
-  name: Release $TRAVIS_COMMIT_MESSAGE
-  tag_name: $TAG
-  body: $BODY
-  on:
-    repo: Guseyn/broken-xml
-    branch:
-      - master
-    condition: $TRAVIS_COMMIT_MESSAGE =~ ^([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})$
-  skip_cleanup: 'true'
+  - provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: BN1yM8gFuzh6PGnY73DcxwhOQ+UqQR+6sNVgEYDkZ3S725MG0+hqo/vuDju+UU7RuYKXhHEo7AiK8QkVEf6KOrNSp6gDdPXzJ+Y0G5K1wY/4YAoQWB3qFpOXUL1FCH6p65bgJQ3CzGncVmsupYCcxqNMxqTbEqwPwPtPukdWvOjbxkB+PhEnhhKQxnB8xLpW5xRfWi1yKChCMAD+AaKkR9jW+eK8ZT4YJzNwrxs3w/LoN/NKoZircOZ3KGp+GqIqz/1qcma+U6aF1ovNVg7LQjnEjyOPX+Th6oLMdmuKx0CTh6wyTjKaD58JdXbtJ3vDtdH65ghDsQtp7ea6dywGlotypamCvDMFgPeQHEy9jlz5zr7j+ePyZKAi+aDVozs0/sA8BSOnhRzJLhpPL261ZOn6WcWq7h1w8w7whdi+lVn+S7CHzZgOFXm+hnJXgOnGJ57AgijNhHiVhZi4zvDHBVhVVw1jFLn9c4CXfpnVOUR/XENaRWO6J2ts0DoNEpqpTxoZPZlE4mxzvOPTDbG4Wu/fBISy/CRvO48PX8tmkXQZIlUjSiQN+An+zOZBwBEohZn5n8H3z3aIkiC6WWM7k/G4E9jg3OfE0dYKihaxuaX6N5GjnsEh5yPCm5caQjZM2oRYOnNsNPlGW3VmZVO5vdJ5SVxoMQa0Ei3j8JoJ740=
+    file: README.md
+    name: Release $TRAVIS_COMMIT_MESSAGE
+    tag_name: $TAG
+    body: $BODY
+    on:
+      repo: Guseyn/broken-xml
+      branch:
+        - master
+      condition: $TRAVIS_COMMIT_MESSAGE =~ ^([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})$
