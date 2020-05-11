@@ -26,7 +26,6 @@ deploy:
   file:
     - README.md
     - target/broken-xml-$project_version.jar
-
   name: Release $TRAVIS_COMMIT_MESSAGE
   tag_name: $TAG
   body: $BODY
