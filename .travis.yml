@@ -17,8 +17,6 @@ before_deploy: |-
   log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
   export TAG=$'v'$TRAVIS_COMMIT_MESSAGE
   export BODY=$'**Change log:**<br/>'${log//$'\n'/<br/>}
-  mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-  export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 deploy:
   - provider: releases
     skip_cleanup: true
