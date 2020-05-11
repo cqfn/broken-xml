@@ -3,7 +3,6 @@ jdk:
 - openjdk8
 os:
 - linux
-- windows
 cache:
   directories:
   - "$HOME/.m2"
