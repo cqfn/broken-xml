@@ -247,3 +247,11 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValues {
 ```bash
 mvn checkstyle:checkstyle
 ```
+
+## Build from sources
+
+```bash
+mvn clean install
+```
+
+Jar file is `/target/broken-xml-<version>.jar`.
