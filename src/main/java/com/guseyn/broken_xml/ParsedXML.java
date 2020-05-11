@@ -388,7 +388,7 @@ public final class ParsedXML {
         return document;
     }
 
-    private boolean isDelimiter(char c) {
+    private boolean isDelimiter(final char c) {
         final char[] delimiters = {' ', '\n', '\r', '\t'};
         for (final char delimiter : delimiters) {
             if (delimiter == c) {
@@ -398,7 +398,7 @@ public final class ParsedXML {
         return false;
     }
 
-    private boolean isQuote(char c) {
+    private boolean isQuote(final char c) {
         return c == '\'' || c == '\"';
     }
 }

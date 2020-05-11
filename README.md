@@ -239,3 +239,9 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValues {
 ```
 
 ...to be continued
+
+##Running checkstyle
+
+```bash
+mvn checkstyle:checkstyle
+```
