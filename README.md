@@ -2,6 +2,8 @@
 
 <img src="https://raw.githubusercontent.com/Guseyn/logos/master/broken-xml.svg?sanitize=true">
 
+[![Build Status](https://travis-ci.org/Guseyn/broken-xml.svg?branch=master)](https://travis-ci.com/Guseyn/broken-xml)
+
 **Disclaimer:** this project is under active development and not ready yet for usage.
 
 **Broken XML** is a parser that can parse any broken and invalid xml. This parser should not be used
