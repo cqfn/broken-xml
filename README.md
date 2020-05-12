@@ -3,6 +3,7 @@
 <img src="https://raw.githubusercontent.com/Guseyn/logos/master/broken-xml.svg?sanitize=true">
 
 [![Build Status](https://travis-ci.org/Guseyn/broken-xml.svg?branch=master)](https://travis-ci.org/Guseyn/broken-xml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.guseyn.broken-xml/broken-xml.svg)](https://maven-badges.herokuapp.com/maven-central/com.guseyn.broken-xml/broken-xml)
 
 **Disclaimer:** this project is under active development and not ready yet for usage.
 
