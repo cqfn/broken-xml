@@ -1,7 +1,7 @@
 import com.guseyn.broken_xml.Attribute;
 import com.guseyn.broken_xml.HeadElement;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class XmlTestUtils {
 

@@ -1,10 +1,10 @@
 import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class NoXmlAroundXml extends XmlTest {
+public class NoXmlAroundXml extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
@@ -15,6 +15,6 @@ public class NoXmlAroundXml extends XmlTest {
         assertEquals(document.roots().get(0).name(), "root");
         assertEquals(document.roots().get(0).texts().get(0).value(), "\n  text\n");
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 126);
+        assertEquals(document.end(), 125);
     }
 }

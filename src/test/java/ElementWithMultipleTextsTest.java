@@ -3,17 +3,17 @@ import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class ElementWithMultipleTexts extends XmlTest {
+public class ElementWithMultipleTextsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("element-with-multiple-texts.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 118);
+        assertEquals(document.end(), 117);
         assertEquals(document.roots().size(), 1);
 
         List<Element> elements = document.roots().get(0).children();

@@ -1,17 +1,17 @@
 import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class SingleRoot extends XmlTest {
+public class SingleRootTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("single-root.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 35);
+        assertEquals(document.end(), 34);
         assertEquals(document.roots().size(), 1);
         assertEquals(document.roots().get(0).name(), "root");
         assertEquals(document.roots().get(0).start(), 0);

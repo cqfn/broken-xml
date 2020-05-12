@@ -1,10 +1,10 @@
 import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class EmptyXml extends XmlTest {
+public class EmptyXmlTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
@@ -13,6 +13,6 @@ public class EmptyXml extends XmlTest {
         assertEquals(document.heads().size(), 0);
         assertEquals(document.roots().size(), 0);
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 1);
+        assertEquals(document.end(), 0);
     }
 }
