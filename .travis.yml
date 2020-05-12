@@ -6,12 +6,17 @@ os:
 cache:
   directories:
   - "$HOME/.m2"
+env:
+  global:
+    - CODECOV_TOKEN=f1f9df08-dc5a-485d-8ea8-bcf963a62003
 install:
   mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 script: |-
   mvn clean install -Plocal || travis_terminate 1
   log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
   echo $'**Change log:**<br/>'${log//$'\n'/<br/>}
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 branches:
   only:
   - master
