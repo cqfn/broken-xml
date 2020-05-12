@@ -1,17 +1,17 @@
 import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class MultipleRoots extends XmlTest {
+public class MultipleRootsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(dataByPath("multiple-roots.xml"));
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 76);
+        assertEquals(document.end(), 75);
         assertEquals(document.roots().size(), 2);
 
         assertEquals(document.roots().get(0).name(), "root");

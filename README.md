@@ -138,7 +138,7 @@ public class Main {
 If you have an empty xml, no problem, you'll get just empty `XmlDocument`:
 
 ```java
-public class EmptyXml {
+public class EmptyXmlTest {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("");
@@ -173,7 +173,7 @@ public class NoXmlAroundXml {
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
 
 ```java
-public class MultipleRoots {
+public class MultipleRootsTest {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
@@ -221,7 +221,7 @@ text2
 It's not a problem, you'll get properly parsed attribute values:
 
 ```java
-public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValues {
+public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
     @Test
     @Override
     public void test() throws IOException {
@@ -251,7 +251,7 @@ mvn checkstyle:checkstyle
 ## Build from sources
 
 ```bash
-mvn clean install
+mvn clean install -Plocal
 ```
 
 Jar file is `/target/broken-xml-<version>.jar`.

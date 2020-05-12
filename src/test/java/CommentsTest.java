@@ -1,10 +1,10 @@
 import com.guseyn.broken_xml.ParsedXML;
 import com.guseyn.broken_xml.XmlDocument;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class Comments extends XmlTest {
+public class CommentsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
