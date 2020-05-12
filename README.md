@@ -178,7 +178,7 @@ public class EmptyXmlTest {
 **Broken XML** allows you to have xml text with no xml stuff, in such case it will return information only about xml part:
 
 ```java
-public class NoXmlAroundXml {
+public class NoXmlAroundXmlTest {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("Some text here<root attr=\"value\">text</root>and some text here");
@@ -212,7 +212,7 @@ public class MultipleRootsTest {
 It does not matter anymore if elements in your xml have duplicate attribute names, **Broken XML** will return a list of them:
 
 ```java
-public class DuplicateAttributesInElement {
+public class DuplicateAttributesInElementTest {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML("<elm attr=\"value1\" attr=\"value2\"></elm>");
