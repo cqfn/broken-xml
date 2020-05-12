@@ -2,7 +2,7 @@
           xsi:schemalocation="http://maven.apache.org/SETTINGS/1.0.0/http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <servers>
     <server>
-      <id>ossh</id>
+      <id>ossrh</id>
       <username>${env.SONATYPE_USERNAME}</username>
       <password>${env.SONATYPE_PASSWORD}</password>
     </server>
@@ -10,7 +10,7 @@
 
   <profiles>
     <profile>
-      <id>osshr</id>
+      <id>ossrh</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
