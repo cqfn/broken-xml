@@ -11,7 +11,7 @@
 **Broken XML** is a parser that can parse any broken and invalid xml. This parser should not be used
 by any normal human being. But if you're lucky like myself, just read further...
 
-## Add via maven
+## Add via Maven
 
 ```xml
 <dependency>
