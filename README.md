@@ -13,7 +13,7 @@ by any normal human being. But if you're lucky like myself, just read further...
 
 ## Add via maven
 
-```
+```xml
 <dependency>
   <groupId>com.guseyn.broken-xml</groupId>
   <artifactId>broken-xml</artifactId>
