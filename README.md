@@ -11,6 +11,26 @@
 **Broken XML** is a parser that can parse any broken and invalid xml. This parser should not be used
 by any normal human being. But if you're lucky like myself, just read further...
 
+## Add via maven
+
+```
+<dependency>
+  <groupId>com.guseyn.broken-xml</groupId>
+  <artifactId>broken-xml</artifactId>
+  <version>${broken-xml.last-version}</version>
+</dependency>
+```
+
+## Build from sources
+
+```bash
+mvn clean package -Plocal
+```
+
+Jar file is `/target/broken-xml-<version>.jar`.
+
+Or you can just install last version of jar file in the [**releases**](https://github.com/Guseyn/broken-xml/releases) section(while I am trying to setup it into maven central).
+
 ## API
 
 **Broken XML** works only with a simple `String` on input:
@@ -249,13 +269,3 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
 ```bash
 mvn checkstyle:checkstyle
 ```
-
-## Build from sources
-
-```bash
-mvn clean install -Plocal
-```
-
-Jar file is `/target/broken-xml-<version>.jar`.
-
-Or you can just install last version of jar file in the [**releases**](https://github.com/Guseyn/broken-xml/releases) section(while I am trying to setup it into maven central).
