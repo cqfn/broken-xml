@@ -29,7 +29,7 @@ mvn clean package -Plocal
 
 Jar file is `/target/broken-xml-<version>.jar`.
 
-Or you can just install last version of jar file in the [**releases**](https://github.com/Guseyn/broken-xml/releases) section(while I am trying to setup it into maven central).
+Or you can just install last version of jar file in the [**releases**](https://github.com/Guseyn/broken-xml/releases) section.
 
 ## API
 
