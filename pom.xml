@@ -4,7 +4,7 @@
 
   <groupId>com.guseyn.broken-xml</groupId>
   <artifactId>broken-xml</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 
   <licenses>
     <license>
@@ -221,9 +221,7 @@
                 <id>sign-artifact</id>
                 <phase>verify</phase>
                 <goals>
-                  <goal>
-                    sign
-                  </goal>
+                  <goal>sign</goal>
                 </goals>
               </execution>
             </executions>

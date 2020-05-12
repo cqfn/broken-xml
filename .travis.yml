@@ -21,6 +21,8 @@ before_deploy: |-
   export BODY=$'**Change log:**<br/>'${log//$'\n'/<br/>}
   mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
   export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+  echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 deploy:
   - provider: releases
     skip_cleanup: true
