@@ -13,13 +13,15 @@ install:
   mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 script: |-
   mvn clean install -Plocal || travis_terminate 1
+  log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
+  echo $'Commit message: '$TRAVIS_COMMIT_MESSAGE
   echo $'**Change log:**<br/>'${log//$'\n'/<br/>}
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  bash <(curl -s https://codecov.io/bash)
 branches:
   only:
   - master
 before_deploy: |-
+  log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
   export TAG=$'v'$TRAVIS_COMMIT_MESSAGE
   export BODY=$'**Change log:**<br/>'${log//$'\n'/<br/>}
   mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
