@@ -4,7 +4,7 @@
 
   <groupId>com.guseyn.broken-xml</groupId>
   <artifactId>broken-xml</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
 
   <licenses>
     <license>
@@ -194,9 +194,7 @@
               <execution>
                 <id>attach-sources</id>
                 <goals>
-                  <goal>
-                    jar-no-fork
-                  </goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -209,9 +207,7 @@
               <execution>
                 <id>attach-java-docs</id>
                 <goals>
-                  <goal>
-                    jar-no-fork
-                  </goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
