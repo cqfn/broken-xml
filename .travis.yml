@@ -16,7 +16,6 @@ script: |-
   log=$(git log $TRAVIS_COMMIT_RANGE --oneline)
   echo $'Commit message: '$TRAVIS_COMMIT_MESSAGE
   echo $'**Change log:**<br/>'${log//$'\n'/<br/>}
-  bash <(curl -s https://codecov.io/bash)
 branches:
   only:
   - master
