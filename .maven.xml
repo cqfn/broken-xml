@@ -21,8 +21,3 @@
     </profile>
   </profiles>
 </settings>
-<server>
-<id>${server}</id>
-<username>TrfaEM03</username>
-<password>jbeNFPNexHBg8CljKJ+6VjV82TfzlnZ2hO2RgTmOf6Tr</password>
-</server>
