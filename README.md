@@ -155,7 +155,8 @@ public class Main {
 
 ## How broken is your XML?
 
-### Empty xml
+<details>
+  <summary><b>Empty xml</b></summary><br>
 
 If you have an empty xml, no problem, you'll get just empty `XmlDocument`:
 
@@ -173,7 +174,11 @@ public class EmptyXmlTest {
 }
 ```
 
-### XML that is wrapped with some other text
+</details>
+
+<details>
+  <summary><b>XML that is wrapped with some other text</b></summary><br>
+
 
 **Broken XML** allows you to have xml text with no xml stuff, in such case it will return information only about xml part:
 
@@ -190,7 +195,10 @@ public class NoXmlAroundXmlTest {
 }
 ```
 
-### Multiple roots
+</details>
+
+<details>
+  <summary><b>Multiple roots</b></summary><br>
 
 Valid xml contains only one root element. But **Broken XML** does not care and returns multiple roots as a list:
 
@@ -207,7 +215,10 @@ public class MultipleRootsTest {
 }
 ```
 
-### Duplicate attributes in elements
+</details>
+
+<details>
+  <summary><b>Duplicate attributes in elements</b></summary><br>
 
 It does not matter anymore if elements in your xml have duplicate attribute names, **Broken XML** will return a list of them:
 
@@ -227,7 +238,10 @@ public class DuplicateAttributesInElementTest {
 }
 ```
 
-### Different types of opening and closing quotes for attribute values
+</details>
+
+<details>
+  <summary><b>Different types of opening and closing quotes for attribute values</b></summary><br>
 
 If your values of attributes are wrapped with different opening and closing quotes like in following xml:
 
@@ -261,6 +275,114 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
     }
 }
 ```
+
+</details>
+
+<details>
+  <summary><b>Some tags are not closed</b></summary><br>
+  
+You can have xml with unclosed tags:
+
+```xml
+<root>
+  <elm1 attr="value">
+    text
+  </elm1>
+  <elm2 attr="value" attr="value">text
+</root>
+```
+
+That's fine, **Broken xml** parses such things:
+
+```java
+public class SomeTagsAreNotClosedTest {
+    @Test
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.roots().get(0).children().size(), 2);
+        assertEquals(document.roots().get(0).children().get(1).name(), "elm2");
+        assertEquals(document.roots().get(0).children().get(1).texts().get(0).value(), "text\n");
+        assertEquals(document.roots().get(0).children().get(1).texts().get(0).end(), 86);
+        assertEquals(document.roots().get(0).children().get(1).end(), 86);
+    }
+}
+```
+
+</details>
+
+<details>
+  <summary><b>No closing tags at all</b></summary><br>
+  
+Who needs closing tags anyway, right?
+
+```xml
+<root>
+  <elm1 attr="value" attr="value">
+    <elm2 attr="value" attr="value">
+      <elm3 attr="value" attr="value">
+        <elm4 attr="value" attr="value">
+          <elm5 attr="value" attr="value">
+            <elm6 attr="value" attr="value">text
+```
+
+That's fine, **Broken xml** parses even such things:
+
+```java
+public class NoClosedTagsAtAllTest {
+    @Test
+    @Override
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).name(), "elm1");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).attributes().get(0).value(), "value");
+
+        assertEquals(document.roots().get(0).children().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).name(), "elm2");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).name(), "elm3");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm4");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm5");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).name(), "elm6");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
+        assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).texts().get(0).value(), "text");
+    }
+}
+```
+
+</details>
 
 ...to be continued
 
