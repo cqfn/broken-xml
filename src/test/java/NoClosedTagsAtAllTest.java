@@ -4,18 +4,14 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class NestedXmlWithDuplicateAttributesTest extends XmlSource {
-
+public class NoClosedTagsAtAllTest extends XmlSource  {
     @Test
     @Override
-    public void test() throws IOException {
+    void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
-            dataByPath("nested-xml-with-duplicated-attributes.xml")
+            dataByPath("no-closing-tags-at-all.xml")
         );
         XmlDocument document = xml.document();
-        assertEquals(document.heads().size(), 0);
-        assertEquals(document.roots().size(), 1);
-
         assertEquals(document.roots().get(0).children().size(), 1);
         assertEquals(document.roots().get(0).children().get(0).name(), "elm1");
         assertEquals(document.roots().get(0).children().get(0).attributes().get(0).name(), "attr");

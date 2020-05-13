@@ -3,6 +3,7 @@ package com.guseyn.broken_xml;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import org.apache.commons.lang3.tuple.Pair;
 
 public final class ParsedXML {
 
@@ -16,6 +17,8 @@ public final class ParsedXML {
 
         final int inputLength = xml.length();
         final char[] chars = xml.toCharArray();
+
+        final List<Pair<Element, Integer>> allElementsWithStartPosition = new ArrayList<>();
 
         boolean headElementIsInProcess = false;
         HeadElement currentHeadElement = null;
@@ -223,6 +226,8 @@ public final class ParsedXML {
                         currentElementStart
                     );
                     currentElement.attributes().addAll(currentAttributes);
+                    Pair<Element, Integer> elementWithStartPosition = Pair.of(currentElement, i);
+                    allElementsWithStartPosition.add(elementWithStartPosition);
                     if (processingElms.size() == 0) {
                         currentParentElement = currentElement;
                     } else {
@@ -238,7 +243,17 @@ public final class ParsedXML {
                     continue;
                 }
                 if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
-                    currentElement.correctEnd(i);
+                    if (currentElement.name().equals(currentClosingElementName.toString())) {
+                        currentElement.correctEnd(i);
+                    } else {
+                        if (currentElement.texts().size() > 0) {
+                            currentElement.correctEnd(
+                                currentElement.texts().get(
+                                    currentElement.texts().size() - 1
+                                ).end()
+                            );
+                        }
+                    }
                     if (currentParentElement != currentElement) {
                         currentParentElement.children().add(currentElement);
                     }
@@ -282,7 +297,17 @@ public final class ParsedXML {
                     continue;
                 }
                 if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
-                    currentElement.correctEnd(i);
+                    if (currentElement.name().equals(currentClosingElementName.toString())) {
+                        currentElement.correctEnd(i);
+                    } else {
+                        if (currentElement.texts().size() > 0) {
+                            currentElement.correctEnd(
+                                currentElement.texts().get(
+                                    currentElement.texts().size() - 1
+                                ).end()
+                            );
+                        }
+                    }
                     if (currentParentElement != currentElement) {
                         currentParentElement.children().add(currentElement);
                     }
@@ -385,7 +410,20 @@ public final class ParsedXML {
                 continue;
             }
         }
-        return document;
+
+        if (processingElms.size() > 0) {
+            if (elementTextIsInProcess) {
+                processingElms.get(processingElms.size() - 1).texts().add(
+                    new Text(
+                        currentElementText.toString(),
+                        currentElementTextStart,
+                        currentElementTextEnd
+                    )
+                );
+            }
+        }
+
+        return traverseUnclosedElements(document, processingElms, allElementsWithStartPosition);
     }
 
     private boolean isDelimiter(final char c) {
@@ -400,5 +438,65 @@ public final class ParsedXML {
 
     private boolean isQuote(final char c) {
         return c == '\'' || c == '\"';
+    }
+
+    private XmlDocument traverseUnclosedElements(
+        final XmlDocument document,
+        final Stack<Element> unclosedElms,
+        final List<Pair<Element, Integer>> allElementsWithStartPosition
+    ) {
+        if (unclosedElms.size() > 0) {
+            Element lastChild = unclosedElementWithCorrectedEnd(
+                unclosedElms.pop(),
+                allElementsWithStartPosition
+            );
+            final Element parenOfLastChild = this.parentOfUnclosedElement(
+                lastChild, allElementsWithStartPosition
+            );
+            if (parenOfLastChild != null) {
+                parenOfLastChild.children().add(lastChild);
+            } else if (document.roots().size() > 0) {
+                document.roots().get(document.roots().size() - 1).children().add(lastChild);
+            } else {
+                document.roots().add(lastChild);
+            }
+            allElementsWithStartPosition.add(
+                Pair.of(lastChild, lastChild.start())
+            );
+            traverseUnclosedElements(document, unclosedElms, allElementsWithStartPosition);
+        }
+        return document;
+    }
+
+    private Element unclosedElementWithCorrectedEnd(
+        final Element unclosedElement,
+        final List<Pair<Element, Integer>> allElementsWithStartPosition
+    ) {
+        for (Pair<Element, Integer> elementWithStartPosition: allElementsWithStartPosition) {
+            if (elementWithStartPosition.getValue() > unclosedElement.start()) {
+                unclosedElement.correctEnd(elementWithStartPosition.getValue());
+                break;
+            }
+        }
+        if (unclosedElement.texts().size() > 0) {
+            unclosedElement.correctEnd(
+                unclosedElement.texts().get(
+                    unclosedElement.texts().size() - 1
+                ).end()
+            );
+        }
+        return unclosedElement;
+    }
+
+    private Element parentOfUnclosedElement(
+        final Element unclosedElement,
+        final List<Pair<Element, Integer>> allElementsWithStartPosition
+    ) {
+        for (int i = allElementsWithStartPosition.size() - 1; i >= 0; i--) {
+            if (allElementsWithStartPosition.get(i).getValue() < unclosedElement.start()) {
+                return allElementsWithStartPosition.get(i).getKey();
+            }
+        }
+        return null;
     }
 }

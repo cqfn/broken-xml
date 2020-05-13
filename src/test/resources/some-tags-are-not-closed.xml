@@ -1,0 +1,6 @@
+<root>
+  <elm1 attr="value">
+    text
+  </elm1>
+  <elm2 attr="value" attr="value">text
+</root>
