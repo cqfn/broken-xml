@@ -172,7 +172,7 @@ public final class ParsedXML {
                     currentCommentText.append(currentChar);
                     continue;
                 }
-                if (elementTextIsInProcess) {
+                if (elementTextIsInProcess && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
                     currentElementTextEnd = i - 1;
                     if (currentElement != null) {
                         currentElement.texts().add(
@@ -187,8 +187,10 @@ public final class ParsedXML {
                     currentElementText = null;
                     currentElementTextStart = 0;
                     currentElementTextEnd = 0;
+                } else if (elementTextIsInProcess) {
+                    currentElementText.append(currentChar);
                 }
-                if (!attributeValueIsInProcess && i < inputLength - 1) {
+                if (!attributeValueIsInProcess && i < inputLength - 1  && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
                     if (chars[i + 1] != '/') {
                         numberOfOpenBrackets += 1;
                         if (!openingElementNameIsInProcess) {
@@ -434,6 +436,10 @@ public final class ParsedXML {
             }
         }
         return false;
+    }
+
+    private boolean isBracket(final char c) {
+        return c == '<' || c == '>';
     }
 
     private boolean isQuote(final char c) {
