@@ -412,6 +412,40 @@ public class SwappedOpeningAndClosingTags {
 
 </details>
 
+<details>
+    <summary><b>Brackets inside of elements</b></summary><br>
+    
+**Broken XML** can handle brackets `<`, `>` inside of elements if they are not really part of element tags:
+
+```xml
+<elm1>
+  <><<
+  <elm2>
+    <><<
+  </elm2>
+</elm1>
+```
+    
+It will parsed with no problems:
+
+```java
+
+public class BracketsInTexts extends XmlSource {
+    @Test
+    @Override
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().get(0).name(), "elm1");
+        assertEquals(document.roots().get(0).texts().get(0).value(), "\n  <><<\n  ");
+        assertEquals(document.roots().get(0).children().get(0).name(), "elm2");
+        assertEquals(document.roots().get(0).children().get(0).texts().get(0).value(), "\n    <><<\n  ");
+    }
+}
+```
+    
+</details>
+
 ...to be continued
 
 ## Running checkstyle
