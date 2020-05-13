@@ -163,7 +163,7 @@ If you have an empty xml, no problem, you'll get just empty `XmlDocument`:
 ```java
 public class EmptyXmlTest {
     @Test
-    public void test() throws IOException {
+    public void test() {
         final ParsedXML xml = new ParsedXML("");
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 0);
@@ -185,7 +185,7 @@ public class EmptyXmlTest {
 ```java
 public class NoXmlAroundXmlTest {
     @Test
-    public void test() throws IOException {
+    public void test() {
         final ParsedXML xml = new ParsedXML("Some text here<root attr=\"value\">text</root>and some text here");
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 1);
@@ -205,7 +205,7 @@ Valid xml contains only one root element. But **Broken XML** does not care and r
 ```java
 public class MultipleRootsTest {
     @Test
-    public void test() throws IOException {
+    public void test() {
         final ParsedXML xml = new ParsedXML("<root1></root1><root2></root2>");
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 2);
@@ -225,7 +225,7 @@ It does not matter anymore if elements in your xml have duplicate attribute name
 ```java
 public class DuplicateAttributesInElementTest {
     @Test
-    public void test() throws IOException {
+    public void test() {
         final ParsedXML xml = new ParsedXML("<elm attr=\"value1\" attr=\"value2\"></elm>");
         XmlDocument document = xml.document();
         Element element = document.roots().get(0);
@@ -259,8 +259,7 @@ It's not a problem, you'll get properly parsed attribute values:
 ```java
 public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
     @Test
-    @Override
-    public void test() throws IOException {
+    public void test() {
         final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
@@ -297,7 +296,7 @@ That's fine, **Broken xml** parses such things:
 ```java
 public class SomeTagsAreNotClosedTest {
     @Test
-    void test() throws IOException {
+    void test() {
         final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 1);
@@ -332,8 +331,7 @@ That's fine, **Broken xml** parses even such things:
 ```java
 public class NoClosedTagsAtAllTest {
     @Test
-    @Override
-    void test() throws IOException {
+    void test() {
         final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
         XmlDocument document = xml.document();
         assertEquals(document.roots().get(0).children().size(), 1);
@@ -378,6 +376,36 @@ public class NoClosedTagsAtAllTest {
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).name(), "attr");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).attributes().get(0).value(), "value");
         assertEquals(document.roots().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).children().get(0).texts().get(0).value(), "text");
+    }
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Swapped opening and closing tags</b></summary><br>
+  
+Obviously **Broken XXML** does not care if names in opening and closing tags of elements match:
+
+```xml
+<elm1>
+  <elm2>text</elm1>
+</elm2>
+```
+
+**Broken XML** can easily eat such stuff:
+
+```java
+public class SwappedOpeningAndClosingTags {
+    @Test
+    public void test() {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.roots().get(0).children().size(), 1);
+        assertEquals(document.roots().get(0).name(), "elm1");
+        assertEquals(document.roots().get(0).children().get(0).name(), "elm2");
+        assertEquals(document.roots().get(0).children().get(0).texts().get(0).value(), "text");
     }
 }
 ```

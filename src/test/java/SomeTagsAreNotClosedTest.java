@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class SomeTagsAreNotClosedTest extends XmlSource {
     @Test
     @Override
-    void test() throws IOException {
+    public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
             dataByPath("some-tags-are-not-closed.xml")
         );
