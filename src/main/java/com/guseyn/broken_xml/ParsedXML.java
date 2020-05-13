@@ -172,6 +172,27 @@ public final class ParsedXML {
                     currentCommentText.append(currentChar);
                     continue;
                 }
+                if (!attributeValueIsInProcess && i < inputLength - 1  && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
+                    if (chars[i + 1] != '/') {
+                        numberOfOpenBrackets += 1;
+                        if (!openingElementNameIsInProcess) {
+                            openingElementNameIsInProcess = true;
+                            currentOpeningElementName = new StringBuilder();
+                            currentElementStart = i;
+                        }
+                    } else {
+                        numberOfClosedBrackets += 1;
+                        if (!closingElementNameIsInProcess) {
+                            closingElementNameIsInProcess = true;
+                            currentClosingElementName = new StringBuilder();
+                        }
+                    }
+                } else {
+                    if (attributeValueIsInProcess) {
+                        currentAttributeValue.append(currentChar);
+                        continue;
+                    }
+                }
                 if (elementTextIsInProcess && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
                     currentElementTextEnd = i - 1;
                     if (currentElement != null) {
@@ -212,6 +233,10 @@ public final class ParsedXML {
             if (currentChar == '>') {
                 if (commentIsInProcess) {
                     currentCommentText.append(currentChar);
+                    continue;
+                }
+                if (attributeValueIsInProcess) {
+                    currentAttributeValue.append(currentChar);
                     continue;
                 }
                 if (elementTextIsInProcess) {
