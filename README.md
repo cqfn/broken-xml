@@ -475,6 +475,7 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
     }
 }
 ```
+</details>
 
 <details>
   <summary><b>Non closing tags with mutiple roots</b></summary><br>
