@@ -1,0 +1,13 @@
+<root1>
+  <elm></elm>
+</root1>
+<root2>
+  <elm></elm>
+</root2>
+<root3>
+  <elm1 attr="value" attr="value">
+    <elm2 attr="value" attr="value">
+      <elm3 attr="value" attr="value">
+        <elm4 attr="value" attr="value">
+          <elm5 attr="value" attr="value">
+            <elm6 attr="value" attr="value">text
