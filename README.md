@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.com/Guseyn/broken-xml.svg?branch=master)](https://travis-ci.com/Guseyn/broken-xml)
 [![codecov](https://codecov.io/gh/Guseyn/broken-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/Guseyn/broken-xml)
 
-**Broken XML** is a parser that can parse any broken and invalid xml. This parser should not be used
+**Broken XML** is a parser that can parse any broken and invalid XML. This parser should not be used
 by any normal human being. But if you're lucky like myself, just read further...
 
 ## Add via Maven
@@ -441,6 +441,9 @@ public class NonEscapedQuotesTest extends XmlSource {
 
 ## Impossible even for Broken XML
 
+In this section everything will be parsed without any errors but not in the way that you'd expect, because **Broken XML** should also be able to parse valid XML as well.
+And there are some exceptional situations where it's impossible to predict what exactly is needed to parse. So, basically, following cases are not resolvable even theoretically and you have to remember what you'll get from the parser if they happens. 
+
 <details>
   <summary><b>Different types of opening and closing quotes for attribute values</b></summary><br>
 
@@ -501,6 +504,36 @@ So, in another words we will have logical errors in our parser if we do otherwis
 
 Just remember what you'll get in such exceptional situations. And for God's sake just fix your XMLs.
 
+</details>
+
+<details>
+    <summary><b>Non closed comment</b></summary><br>
+
+If you forgot to close comment:
+
+```xml
+<elm>
+  <!--sfsef
+</elm>
+```
+
+then sorry, but everything till the end will be parsed as a comment(but will be parsed anyway!):
+
+```java
+public class NonClosedCommentTest extends XmlSource {
+    @Test
+    @Override
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("non-closed-comment.xml")
+        );
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.comments().size(), 1);
+        assertEquals(document.comments().get(0).text(), "sfsef\n<elm>");
+    }
+}
+```
 
 </details>
 

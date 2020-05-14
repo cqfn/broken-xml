@@ -4,12 +4,12 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class CommentAsTextTest extends XmlSource {
+public class NonClosedCommentTest extends XmlSource {
     @Test
     @Override
     void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
-            dataByPath("comment-as-text.xml")
+            dataByPath("non-closed-comment.xml")
         );
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 1);
