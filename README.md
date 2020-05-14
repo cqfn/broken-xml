@@ -466,19 +466,16 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
         final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
-        assertEquals(document.end(), 74);
-        assertEquals(document.roots().size(), 2);
+        assertEquals(document.end(), 73);
+        assertEquals(document.roots().size(), 1);
         assertEquals(document.roots().get(0).attributes().size(), 1);
         assertEquals(document.roots().get(0).attributes().get(0).name(), "attr1");
-        assertEquals(document.roots().get(0).attributes().get(0).value(), "value1");
-        assertEquals(document.roots().get(1).attributes().size(), 1);
-        assertEquals(document.roots().get(1).attributes().get(0).name(), "attr2");
-        assertEquals(document.roots().get(1).attributes().get(0).value(), "value2");
+        assertEquals(document.roots().get(0).attributes().get(0).value(), "value1\">\n  text1\n<root>\n<root attr2\"value2");
     }
 }
 ```
 
-And it's logical. Broken XML also should parse valid xml as well, and it's impossible to read mind of authors of xml what they really mean.
+And it's logical. Broken XML also should parse valid xml as well, and it's impossible to read mind of authors of xml and what they really mean.
 
 </details>
 
