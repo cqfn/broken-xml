@@ -6,8 +6,6 @@
 [![Build Status](https://travis-ci.com/Guseyn/broken-xml.svg?branch=master)](https://travis-ci.com/Guseyn/broken-xml)
 [![codecov](https://codecov.io/gh/Guseyn/broken-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/Guseyn/broken-xml)
 
-**Disclaimer:** this project is under active development and not ready yet for usage.
-
 **Broken XML** is a parser that can parse any broken and invalid xml. This parser should not be used
 by any normal human being. But if you're lucky like myself, just read further...
 
