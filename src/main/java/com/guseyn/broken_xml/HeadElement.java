@@ -1,30 +1,40 @@
 package com.guseyn.broken_xml;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class HeadElement {
-    private final long start;
-    private final long end;
+    private final int start;
+    private final int end;
     private final List<Attribute> attributes;
 
     HeadElement(
-        final long start,
-        final long end,
+        final int start,
+        final int end,
         final List<Attribute> attributes) {
         this.start = start;
         this.end = end;
         this.attributes = attributes;
     }
 
-    public long start() {
+    public int start() {
         return this.start;
     }
 
-    public long end() {
+    public int end() {
         return this.end;
     }
 
     public List<Attribute> attributes() {
         return attributes;
+    }
+
+    String json() {
+        return String.format(
+            "{ \"attributes:\": [ %s ], \"start\": %d, \"end\": %d }",
+            this.attributes.stream().map(Attribute::json).collect(Collectors.joining(", ")),
+            this.start,
+            this.end
+        );
     }
 }

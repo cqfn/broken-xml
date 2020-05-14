@@ -23,4 +23,13 @@ public final class Comment {
     public String text() {
         return this.text;
     }
+
+    String json() {
+        return String.format(
+            "{ \"text:\": \"%s\", \"start\": %d, \"end\": %d }",
+            this.text,
+            this.start,
+            this.end
+        );
+    }
 }

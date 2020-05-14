@@ -48,4 +48,16 @@ public final class Attribute {
     public int valueEnd() {
         return this.valueEnd;
     }
+
+    String json() {
+        return String.format(
+            "{ \"name\": \"%s\", \"value\": \"%s\", \"nameStart\": %d, \"nameEnd\": %d, \"valueStart\": %d, \"valueEnd\": %d }",
+            this.name,
+            this.value,
+            this.nameStart,
+            this.nameEnd,
+            this.valueStart,
+            this.valueEnd
+        );
+    }
 }
