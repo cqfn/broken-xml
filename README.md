@@ -241,43 +241,6 @@ public class DuplicateAttributesInElementTest {
 </details>
 
 <details>
-  <summary><b>Different types of opening and closing quotes for attribute values</b></summary><br>
-
-If your values of attributes are wrapped with different opening and closing quotes like in following xml:
-
-```xml
-<root attr1='value1">
-  text1
-</root>
-<root attr2="value2'>
-text2
-</root>
-```
-
-It's not a problem, you'll get properly parsed attribute values:
-
-```java
-public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
-    @Test
-    public void test() {
-        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
-        XmlDocument document = xml.document();
-        assertEquals(document.start(), 0);
-        assertEquals(document.end(), 74);
-        assertEquals(document.roots().size(), 2);
-        assertEquals(document.roots().get(0).attributes().size(), 1);
-        assertEquals(document.roots().get(0).attributes().get(0).name(), "attr1");
-        assertEquals(document.roots().get(0).attributes().get(0).value(), "value1");
-        assertEquals(document.roots().get(1).attributes().size(), 1);
-        assertEquals(document.roots().get(1).attributes().get(0).name(), "attr2");
-        assertEquals(document.roots().get(1).attributes().get(0).value(), "value2");
-    }
-}
-```
-
-</details>
-
-<details>
   <summary><b>Some tags are not closed</b></summary><br>
   
 You can have xml with unclosed tags:
@@ -426,7 +389,7 @@ public class SwappedOpeningAndClosingTags {
 </elm1>
 ```
     
-It will parsed with no problems:
+It will be parsed with no problems:
 
 ```java
 
@@ -446,7 +409,78 @@ public class BracketsInTexts extends XmlSource {
     
 </details>
 
-...to be continued
+<details>
+    <summary><b>Non-escaped quotes in attribute values</b></summary><br>
+    
+Guess what else **Broken XML** can do. You don't have to escape quotes anymore: 
+
+```xml
+<elm attr=""va""lu""e">
+
+</elm>
+```
+    
+It will be parsed with no problems:
+
+```java
+public class NonEscapedQuotesTest extends XmlSource {
+    @Test
+    @Override
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.roots().get(0).name(), "elm");
+        assertEquals(document.roots().get(0).attributes().get(0).name(), "attr");
+        assertEquals(document.roots().get(0).attributes().get(0).value(), "\"va\"\"lu\"\"e");
+    }
+}
+```
+ 
+**Important note**: it works only if non-escaped quotes are not followed by space or `>` symbol (remember it's impossible to read your mind, luckily for you).
+ 
+</details>
+
+## Impossible even for Broken XML
+
+<details>
+  <summary><b>Different types of opening and closing quotes for attribute values</b></summary><br>
+
+Sorry, but if you will have something like this:
+
+```xml
+<root attr1='value1">
+  text1
+</root>
+<root attr2="value2'>
+text2
+</root>
+```
+
+it will parsed like an element with attribute that has value which is xml-like text:
+
+```java
+public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
+    @Test
+    public void test() {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.start(), 0);
+        assertEquals(document.end(), 74);
+        assertEquals(document.roots().size(), 2);
+        assertEquals(document.roots().get(0).attributes().size(), 1);
+        assertEquals(document.roots().get(0).attributes().get(0).name(), "attr1");
+        assertEquals(document.roots().get(0).attributes().get(0).value(), "value1");
+        assertEquals(document.roots().get(1).attributes().size(), 1);
+        assertEquals(document.roots().get(1).attributes().get(0).name(), "attr2");
+        assertEquals(document.roots().get(1).attributes().get(0).value(), "value2");
+    }
+}
+```
+
+And it's logical. Broken XML also should parse valid xml as well, and it's impossible to read mind of authors of xml what they really mean.
+
+</details>
 
 ## Running checkstyle
 

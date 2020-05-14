@@ -10,7 +10,9 @@ public class ElementWithMultipleTextsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("element-with-multiple-texts.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("element-with-multiple-texts.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
         assertEquals(document.end(), 117);

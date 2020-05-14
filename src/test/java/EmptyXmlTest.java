@@ -8,7 +8,9 @@ public class EmptyXmlTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("empty.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("empty.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 0);
         assertEquals(document.roots().size(), 0);

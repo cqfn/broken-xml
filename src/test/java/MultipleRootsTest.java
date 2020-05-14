@@ -8,7 +8,9 @@ public class MultipleRootsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("multiple-roots.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("multiple-roots.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
         assertEquals(document.end(), 75);

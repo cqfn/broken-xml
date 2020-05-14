@@ -8,7 +8,9 @@ public class CommentsTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("comments.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("comments.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.comments().size(), 5);
         assertEquals(document.comments().get(0).text(), "");
