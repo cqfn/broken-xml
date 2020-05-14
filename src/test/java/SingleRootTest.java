@@ -8,7 +8,9 @@ public class SingleRootTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("single-root.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("single-root.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.start(), 0);
         assertEquals(document.end(), 34);

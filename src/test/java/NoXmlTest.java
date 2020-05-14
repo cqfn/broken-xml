@@ -8,7 +8,9 @@ public class NoXmlTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("no-xml.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("no-xml.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 0);
         assertEquals(document.roots().size(), 0);

@@ -8,7 +8,9 @@ public class NoXmlAroundXml extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("no-xml-around-xml.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("no-xml-around-xml.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 1);
         assertEquals(document.roots().size(), 1);

@@ -37,6 +37,7 @@ public final class ParsedXML {
         StringBuilder currentAttributeValue = null;
         int currentAttributeValueStart = 0;
         int currentAttributeValueEnd = 0;
+        char currentTypeOfOpeningQuote = '"';
 
         boolean commentIsInProcess = false;
         StringBuilder currentCommentText = null;
@@ -370,30 +371,34 @@ public final class ParsedXML {
                 if (attributesIsInProcess) {
                     if (!attributeNameIsInProcess && !attributeValueIsInProcess) {
                         attributeValueIsInProcess = true;
+                        currentTypeOfOpeningQuote = currentChar;
                         currentAttributeValue = new StringBuilder();
                         currentAttributeValueStart = i + 1;
                         continue;
                     }
                     if (attributeValueIsInProcess) {
-                        attributeValueIsInProcess = false;
-                        currentAttributeValueEnd = i - 1;
-                        currentAttributes.add(
-                            new Attribute(
-                                currentAttributeName.toString(),
-                                currentAttributeValue.toString(),
-                                currentAttributeNameStart,
-                                currentAttributeNameEnd,
-                                currentAttributeValueStart,
-                                currentAttributeValueEnd
-                            )
-                        );
-                        currentAttributeName = null;
-                        currentAttributeValue = null;
-                        currentAttributeNameStart = 0;
-                        currentAttributeNameEnd = 0;
-                        currentAttributeValueStart = 0;
-                        currentAttributeValueEnd = 0;
-                        continue;
+                        if (currentChar == currentTypeOfOpeningQuote && (isDelimiter(chars[i + 1]) || chars[i + 1] == '>' || chars[i + 1] == '?')) {
+                            attributeValueIsInProcess = false;
+                            currentAttributeValueEnd = i - 1;
+                            currentAttributes.add(
+                                new Attribute(
+                                    currentAttributeName.toString(),
+                                    currentAttributeValue.toString(),
+                                    currentAttributeNameStart,
+                                    currentAttributeNameEnd,
+                                    currentAttributeValueStart,
+                                    currentAttributeValueEnd
+                                )
+                            );
+                            currentAttributeName = null;
+                            currentAttributeValue = null;
+                            currentAttributeNameStart = 0;
+                            currentAttributeNameEnd = 0;
+                            currentAttributeValueStart = 0;
+                            currentAttributeValueEnd = 0;
+                        } else {
+                            currentAttributeValue.append(currentChar);
+                        }
                     }
                 }
                 continue;
@@ -530,4 +535,6 @@ public final class ParsedXML {
         }
         return null;
     }
+
+
 }

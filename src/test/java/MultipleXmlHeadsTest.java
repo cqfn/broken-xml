@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 public class MultipleXmlHeadsTest extends XmlSource {
     @Test
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("multiple-xml-heads.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("multiple-xml-heads.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 3);
         XmlTestUtils.assertXmlHead(document.heads().get(0), "1.0");

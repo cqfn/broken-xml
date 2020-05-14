@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 public class JustXmlHeadTest extends XmlSource {
     @Test
     public void test() throws IOException {
-        final ParsedXML xml = new ParsedXML(dataByPath("single-xml-head.xml"));
+        final ParsedXML xml = new ParsedXML(
+            dataByPath("single-xml-head.xml")
+        );
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 1);
         XmlTestUtils.assertXmlHead(document.heads().get(0), "1.0");
