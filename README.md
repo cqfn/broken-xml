@@ -290,7 +290,7 @@ Who needs closing tags anyway, right?
 That's fine, **Broken xml** parses even such things:
 
 ```java
-public class NoClosedTagsAtAllTest {
+public class NoClosingTagsAtAllTest {
     @Test
     void test() {
         final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
@@ -473,7 +473,34 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
 }
 ```
 
-And it's logical. Broken XML also should parse valid xml as well, and it's impossible to read mind of authors of xml and what they really mean.
+<details>
+  <summary><b>Non closing tags with mutiple roots</b></summary><br>
+
+Let's say you have following invalid xml:
+
+```xml
+<root1>
+  <elm></elm>
+</root1>
+<root2>
+  <elm></elm>
+</root2>
+<root3>
+  <elm1 attr="value" attr="value">
+    <elm2 attr="value" attr="value">
+      <elm3 attr="value" attr="value">
+        <elm4 attr="value" attr="value">
+          <elm5 attr="value" attr="value">
+            <elm6 attr="value" attr="value">text
+```
+
+**Broken XML** in such case assumes that you closed `<root2>` prematurely and will add `<root3>` as child element to `<root2>`.
+
+**Why?** Well, imagine you have just one root that is not closed, do you really want to create another root for unclosed elements? Or let's say you don't have closed elements in your root(which is closed), we don't really want to create a root for non-closed elements which are in our root, right?
+So, in another words we will have logical errors in our parser if we do otherwise, and technically it's impossible to detect such tiny things in xml format.
+
+Just remember what you'll get in such exceptional situations. And for God's sake just fix your XMLs.
+
 
 </details>
 

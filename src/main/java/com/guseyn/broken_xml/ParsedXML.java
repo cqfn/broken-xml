@@ -486,11 +486,11 @@ public final class ParsedXML {
                 unclosedElms.pop(),
                 allElementsWithStartPosition
             );
-            final Element parenOfLastChild = this.parentOfUnclosedElement(
+            final Element parentOfLastChild = this.parentOfUnclosedElement(
                 lastChild, allElementsWithStartPosition
             );
-            if (parenOfLastChild != null) {
-                parenOfLastChild.children().add(lastChild);
+            if (parentOfLastChild != null) {
+                parentOfLastChild.children().add(lastChild);
             } else if (document.roots().size() > 0) {
                 document.roots().get(document.roots().size() - 1).children().add(lastChild);
             } else {
