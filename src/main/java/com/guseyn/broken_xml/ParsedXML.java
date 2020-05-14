@@ -48,9 +48,6 @@ public final class ParsedXML {
         int currentElementTextStart = 0;
         int currentElementTextEnd = 0;
 
-        int numberOfOpenBrackets = 0;
-        int numberOfClosedBrackets = 0;
-
         Element currentElement = null;
         Element currentParentElement = null;
 
@@ -173,14 +170,12 @@ public final class ParsedXML {
                 }
                 if (!attributeValueIsInProcess && i < inputLength - 1  && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
                     if (chars[i + 1] != '/') {
-                        numberOfOpenBrackets += 1;
                         if (!openingElementNameIsInProcess) {
                             openingElementNameIsInProcess = true;
                             currentOpeningElementName = new StringBuilder();
                             currentElementStart = i;
                         }
                     } else {
-                        numberOfClosedBrackets += 1;
                         if (!closingElementNameIsInProcess) {
                             closingElementNameIsInProcess = true;
                             currentClosingElementName = new StringBuilder();
@@ -209,22 +204,6 @@ public final class ParsedXML {
                     currentElementTextEnd = 0;
                 } else if (elementTextIsInProcess) {
                     currentElementText.append(currentChar);
-                }
-                if (!attributeValueIsInProcess && i < inputLength - 1  && !this.isDelimiter(chars[i + 1]) && !this.isBracket(chars[i + 1])) {
-                    if (chars[i + 1] != '/') {
-                        numberOfOpenBrackets += 1;
-                        if (!openingElementNameIsInProcess) {
-                            openingElementNameIsInProcess = true;
-                            currentOpeningElementName = new StringBuilder();
-                            currentElementStart = i;
-                        }
-                    } else {
-                        numberOfClosedBrackets += 1;
-                        if (!closingElementNameIsInProcess) {
-                            closingElementNameIsInProcess = true;
-                            currentClosingElementName = new StringBuilder();
-                        }
-                    }
                 }
                 continue;
             }
@@ -319,35 +298,6 @@ public final class ParsedXML {
                 if (openingElementNameIsInProcess) {
                     openingElementNameIsInProcess = false;
                     attributesIsInProcess = true;
-                    continue;
-                }
-                if (closingElementNameIsInProcess && currentElement != null && currentParentElement != null) {
-                    if (currentElement.name().equals(currentClosingElementName.toString())) {
-                        currentElement.correctEnd(i);
-                    } else {
-                        if (currentElement.texts().size() > 0) {
-                            currentElement.correctEnd(
-                                currentElement.texts().get(
-                                    currentElement.texts().size() - 1
-                                ).end()
-                            );
-                        }
-                    }
-                    if (currentParentElement != currentElement) {
-                        currentParentElement.children().add(currentElement);
-                    }
-                    processingElms.pop();
-                    if (processingElms.size() == 0) {
-                        document.roots().add(currentParentElement);
-                        currentParentElement = null;
-                    } else {
-                        currentElement = processingElms.get(processingElms.size() - 1);
-                        if (processingElms.size() > 1) {
-                            currentParentElement = processingElms.get(processingElms.size() - 2);
-                        }
-                    }
-                    closingElementNameIsInProcess = false;
-                    currentClosingElementName = null;
                     continue;
                 }
                 continue;
