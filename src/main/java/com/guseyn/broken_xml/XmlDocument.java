@@ -2,6 +2,7 @@ package com.guseyn.broken_xml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class XmlDocument {
     private final int start;
@@ -36,5 +37,16 @@ public final class XmlDocument {
 
     public List<Element> roots() {
         return this.roots;
+    }
+
+    public String json() {
+        return String.format(
+            "{ \"xmlHeads:\": [ %s ], \"comments:\": [ %s ], \"roots:\": [ %s ], \"start\": %d, \"end\": %d }",
+            this.xmlHeads.stream().map(HeadElement::json).collect(Collectors.joining(", ")),
+            this.comments.stream().map(Comment::json).collect(Collectors.joining(", ")),
+            this.roots.stream().map(Element::json).collect(Collectors.joining(", ")),
+            this.start,
+            this.end
+        );
     }
 }

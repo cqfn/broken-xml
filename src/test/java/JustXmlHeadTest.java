@@ -13,5 +13,7 @@ public class JustXmlHeadTest extends XmlSource {
         XmlDocument document = xml.document();
         assertEquals(document.heads().size(), 1);
         XmlTestUtils.assertXmlHead(document.heads().get(0), "1.0");
+        assertEquals(document.heads().get(0).start(), 0);
+        assertEquals(document.heads().get(0).end(), 55);
     }
 }

@@ -22,4 +22,13 @@ public final class Text {
     public String value() {
         return this.value;
     }
+
+    String json() {
+        return String.format(
+            "{ \"value\": \"%s\", \"start\": %d, \"end\": %d }",
+            this.value,
+            this.start,
+            this.end
+        );
+    }
 }

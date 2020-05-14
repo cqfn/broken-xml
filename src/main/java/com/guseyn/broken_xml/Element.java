@@ -2,6 +2,7 @@ package com.guseyn.broken_xml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Element {
     private final String name;
@@ -46,5 +47,17 @@ public final class Element {
 
     void correctEnd(final int end) {
         this.end = end;
+    }
+
+    String json() {
+        return String.format(
+            "{ \"name\": \"%s\", \"attributes:\": [ %s ], \"texts\": [ %s ], \"children\": [ %s ], \"start\": %d, \"end\": %d }",
+            this.name,
+            this.attributes.stream().map(Attribute::json).collect(Collectors.joining(", ")),
+            this.texts.stream().map(Text::json).collect(Collectors.joining(", ")),
+            this.children.stream().map(Element::json).collect(Collectors.joining(", ")),
+            this.start,
+            this.end
+        );
     }
 }
