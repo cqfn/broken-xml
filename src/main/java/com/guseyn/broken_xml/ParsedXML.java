@@ -3,7 +3,6 @@ package com.guseyn.broken_xml;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import org.apache.commons.lang3.tuple.Pair;
 
 public final class ParsedXML {
 
@@ -18,7 +17,7 @@ public final class ParsedXML {
         final int inputLength = xml.length();
         final char[] chars = xml.toCharArray();
 
-        final List<Pair<Element, Integer>> allElementsWithStartPosition = new ArrayList<>();
+        final List<Element> allElements = new ArrayList<>();
 
         boolean headElementIsInProcess = false;
         HeadElement currentHeadElement = null;
@@ -89,7 +88,6 @@ public final class ParsedXML {
             if (currentChar == '>' && i > 0 && chars[i - 1] == '-') {
                 continue;
             }
-
 
             if (currentChar == '/' && i > 0 && chars[i - 1] == '<') {
                 continue;
@@ -254,8 +252,7 @@ public final class ParsedXML {
                         currentElementStart
                     );
                     currentElement.attributes().addAll(currentAttributes);
-                    Pair<Element, Integer> elementWithStartPosition = Pair.of(currentElement, i);
-                    allElementsWithStartPosition.add(elementWithStartPosition);
+                    allElements.add(currentElement);
                     if (processingElms.size() == 0) {
                         currentParentElement = currentElement;
                     } else {
@@ -455,7 +452,17 @@ public final class ParsedXML {
             }
         }
 
-        return traverseUnclosedElements(document, processingElms, allElementsWithStartPosition);
+        if (commentIsInProcess) {
+            document.comments().add(
+                new Comment(
+                    currentCommentText.toString(),
+                    currentCommentStart,
+                    document.end()
+                )
+            );
+        }
+
+        return traverseUnclosedElements(document, processingElms, allElements);
     }
 
     private boolean isDelimiter(final char c) {
@@ -479,15 +486,15 @@ public final class ParsedXML {
     private XmlDocument traverseUnclosedElements(
         final XmlDocument document,
         final Stack<Element> unclosedElms,
-        final List<Pair<Element, Integer>> allElementsWithStartPosition
+        final List<Element> allElements
     ) {
         if (unclosedElms.size() > 0) {
             Element lastChild = unclosedElementWithCorrectedEnd(
                 unclosedElms.pop(),
-                allElementsWithStartPosition
+                allElements
             );
             final Element parentOfLastChild = this.parentOfUnclosedElement(
-                lastChild, allElementsWithStartPosition
+                lastChild, allElements
             );
             if (parentOfLastChild != null) {
                 parentOfLastChild.children().add(lastChild);
@@ -496,21 +503,19 @@ public final class ParsedXML {
             } else {
                 document.roots().add(lastChild);
             }
-            allElementsWithStartPosition.add(
-                Pair.of(lastChild, lastChild.start())
-            );
-            traverseUnclosedElements(document, unclosedElms, allElementsWithStartPosition);
+            allElements.add(lastChild);
+            traverseUnclosedElements(document, unclosedElms, allElements);
         }
         return document;
     }
 
     private Element unclosedElementWithCorrectedEnd(
         final Element unclosedElement,
-        final List<Pair<Element, Integer>> allElementsWithStartPosition
+        final List<Element> allElements
     ) {
-        for (Pair<Element, Integer> elementWithStartPosition: allElementsWithStartPosition) {
-            if (elementWithStartPosition.getValue() > unclosedElement.start()) {
-                unclosedElement.correctEnd(elementWithStartPosition.getValue());
+        for (Element element: allElements) {
+            if (element.start() > unclosedElement.start()) {
+                unclosedElement.correctEnd(element.start());
                 break;
             }
         }
@@ -526,11 +531,12 @@ public final class ParsedXML {
 
     private Element parentOfUnclosedElement(
         final Element unclosedElement,
-        final List<Pair<Element, Integer>> allElementsWithStartPosition
+        final List<Element> allElements
     ) {
-        for (int i = allElementsWithStartPosition.size() - 1; i >= 0; i--) {
-            if (allElementsWithStartPosition.get(i).getValue() < unclosedElement.start()) {
-                return allElementsWithStartPosition.get(i).getKey();
+        for (int i = allElements.size() - 1; i >= 0; i--) {
+            final Element currentElement = allElements.get(i);
+            if (currentElement.start() < unclosedElement.start() && (currentElement.end() > unclosedElement.start() || currentElement.end() == 0)) {
+                return allElements.get(i);
             }
         }
         return null;
