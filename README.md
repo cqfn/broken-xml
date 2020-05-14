@@ -374,16 +374,14 @@ public class SwappedOpeningAndClosingTags {
 </details>
 
 <details>
-    <summary><b>Brackets inside of elements</b></summary><br>
+    <summary><b>Non-escaped brackets inside of elements</b></summary><br>
     
 **Broken XML** can handle brackets `<`, `>` inside of elements if they are not really part of element tags:
 
 ```xml
 <elm1>
   <><<
-  <elm2>
-    <><<
-  </elm2>
+  <elm2><><< some text<><< other text</elm2>
 </elm1>
 ```
     
@@ -391,7 +389,7 @@ It will be parsed with no problems:
 
 ```java
 
-public class BracketsInTexts extends XmlSource {
+public class NonEscapedBracketsInTexts extends XmlSource {
     @Test
     @Override
     void test() throws IOException {
@@ -400,11 +398,13 @@ public class BracketsInTexts extends XmlSource {
         assertEquals(document.roots().get(0).name(), "elm1");
         assertEquals(document.roots().get(0).texts().get(0).value(), "\n  <><<\n  ");
         assertEquals(document.roots().get(0).children().get(0).name(), "elm2");
-        assertEquals(document.roots().get(0).children().get(0).texts().get(0).value(), "\n    <><<\n  ");
+        assertEquals(document.roots().get(0).children().get(0).texts().get(0).value(), "<><< some text<><< other text");
     }
 }
 ```
-    
+
+**Important note**: this works if only bracket `<` are not followed by any valid element name symbol, otherwise [it's impossible even for Broken XML](#impossible-even-for-broken-xml)     
+
 </details>
 
 <details>
@@ -475,6 +475,33 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
     }
 }
 ```
+</details>
+
+<details>
+  <summary><b>Open bracket is follwed by valid element name symbol</b></summary><br>
+  
+You can use non-escaped brackets, but if open bracket `>` is followed by any valid name symbol:
+
+```xml
+<elm2><><<sometext
+</elm2>
+```
+
+Then it will be parsed as part of new tag:
+
+```java
+public class OpenBracketIsFollowedByElementNameSymbolTest {
+    @Test
+    void test() throws IOException {
+        final ParsedXML xml = new ParsedXML(xmlFromFileAsString);
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().get(0).name(), "elm");
+        assertEquals(document.roots().get(0).children().get(0).name(), "sometext");
+    }
+}
+
+```
+  
 </details>
 
 <details>
