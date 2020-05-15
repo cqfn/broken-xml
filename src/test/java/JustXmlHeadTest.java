@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class JustXmlHeadTest extends XmlSource {
+class JustXmlHeadTest extends XmlSource {
     @Test
     public void test() throws IOException {
         final ParsedXML xml = new ParsedXML(

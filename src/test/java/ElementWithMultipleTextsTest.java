@@ -6,10 +6,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class ElementWithMultipleTextsTest extends XmlSource {
+class ElementWithMultipleTextsTest extends XmlSource {
     @Test
     @Override
-    public void test() throws IOException {
+    void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
             dataByPath("element-with-multiple-texts.xml")
         );
