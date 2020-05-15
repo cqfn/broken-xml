@@ -4,10 +4,10 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class EmptyXmlTest extends XmlSource {
+class EmptyXmlTest extends XmlSource {
     @Test
     @Override
-    public void test() throws IOException {
+    void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
             dataByPath("empty.xml")
         );

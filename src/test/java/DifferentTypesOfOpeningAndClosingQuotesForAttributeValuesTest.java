@@ -4,10 +4,10 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest extends XmlSource {
+class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest extends XmlSource {
     @Test
     @Override
-    public void test() throws IOException {
+    void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
             dataByPath("different-types-of-opening-and-closing-quotes-for-attribute-values.xml")
         );
