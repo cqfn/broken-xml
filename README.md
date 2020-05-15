@@ -68,7 +68,7 @@ public class Main {
 <details>
   <summary><b>HeadElement</b></summary><br>
   
-  **HeadElement** represents head of xml. It's an element that looks like `<?xml ... ?>`.
+  **HeadElement** represents head of XML. It's an element that looks like `<?xml ... ?>`.
   
   ```java
   XmlDocument document = new ParsedXML(xmlAsString).document();
@@ -178,7 +178,7 @@ public class EmptyXmlTest {
   <summary><b>XML that is wrapped with some other text</b></summary><br>
 
 
-**Broken XML** allows you to have xml text with no xml stuff, in such case it will return information only about xml part:
+**Broken XML** allows you to have xml text with no XML stuff, in such case it will return information **only** about XML part:
 
 ```java
 public class NoXmlAroundXmlTest {
@@ -505,7 +505,7 @@ public class OpenBracketIsFollowedByElementNameSymbolTest {
 </details>
 
 <details>
-  <summary><b>Non closing tags with mutiple roots</b></summary><br>
+  <summary><b>No closing tags with mutiple roots</b></summary><br>
 
 Let's say you have following invalid xml:
 
@@ -535,7 +535,7 @@ Just remember what you'll get in such exceptional situations. And for God's sake
 </details>
 
 <details>
-    <summary><b>Non closed comment</b></summary><br>
+    <summary><b>Non-closed comment</b></summary><br>
 
 If you forgot to close comment:
 
