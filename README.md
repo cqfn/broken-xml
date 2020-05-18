@@ -75,8 +75,8 @@ public class Main {
   HeadElement head = document.heads().get(0);
   // Components:
   List<Attribute> attributes = head.attributes();
-  int start = element.start();
-  int end = element.end();
+  int start = head.start();
+  int end = head.end();
 ```
 </details>
 
