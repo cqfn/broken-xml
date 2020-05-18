@@ -111,10 +111,10 @@ public class Main {
   // Components:
   String name = attribute.name();
   String value = attribute.value();
-  int nameStart = element.nameStart();
-  int nameEnd = element.nameEnd();
-  int valueStart = value.nameStart();
-  int valueEnd = value.valueEnd();
+  int nameStart = attribute.nameStart();
+  int nameEnd = attribute.nameEnd();
+  int valueStart = attribute.valueStart();
+  int valueEnd = attribute.valueEnd();
 ```
 </details>
 
