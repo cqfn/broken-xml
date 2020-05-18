@@ -346,7 +346,7 @@ public class NoClosingTagsAtAllTest {
 <details>
   <summary><b>Swapped opening and closing tags</b></summary><br>
   
-Obviously **Broken XXML** does not care if names in opening and closing tags of elements match:
+Obviously **Broken XML** does not care if names in opening and closing tags of elements match:
 
 ```xml
 <elm1>
