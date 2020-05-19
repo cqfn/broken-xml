@@ -4,14 +4,14 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-class OneNonClosedTagTest extends XmlSource {
+public class CdataTest extends XmlSource {
     @Test
     @Override
     void test() throws IOException {
         final ParsedXML xml = new ParsedXML(
-            dataByPath("one-non-closed-tag.xml")
+            dataByPath("cdata.xml")
         );
         XmlDocument document = xml.document();
-        assertEquals(document.roots().get(0).name(), "elm");
+        assertEquals(document.roots().get(0).texts().get(0).value(), "\n  <![CDATA[\n   characters with markup\n  ]]>\n");
     }
 }

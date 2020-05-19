@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class SwappedOpeningAndClosingTags extends XmlSource {
+class SwappedOpeningAndClosingTags extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {

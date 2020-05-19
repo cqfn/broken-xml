@@ -82,6 +82,9 @@ public final class ParsedXML {
                 if (commentIsInProcess) {
                     currentCommentText.append(currentChar);
                 }
+                if (elementTextIsInProcess) {
+                    currentElementText.append(currentChar);
+                }
                 continue;
             }
 

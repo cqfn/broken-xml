@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class OpenBracketIsFollowedByElementNameSymbolTest extends XmlSource {
+class OpenBracketIsFollowedByElementNameSymbolTest extends XmlSource {
     @Test
     @Override
     void test() throws IOException {

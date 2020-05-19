@@ -565,6 +565,11 @@ public class NonClosedCommentTest extends XmlSource {
 
 </details>
 
+## What about CDATA
+
+Due to different technical reasons it's decided that it's better to parse `<![CDATA[...]]>` as text inside of element.
+If `<![CDATA[...]]>` is outside of element scope, then it just will not be parsed (like in any normal xml parser).
+
 ## Running checkstyle
 
 ```bash

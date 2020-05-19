@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class NonClosedCommentTest extends XmlSource {
+class NonClosedCommentTest extends XmlSource {
     @Test
     @Override
     void test() throws IOException {
