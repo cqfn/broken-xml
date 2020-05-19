@@ -4,7 +4,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class NoXmlAroundXmlTest extends XmlSource {
+class NoXmlAroundXmlTest extends XmlSource {
     @Test
     @Override
     public void test() throws IOException {

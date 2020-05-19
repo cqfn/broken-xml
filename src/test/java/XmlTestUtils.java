@@ -3,9 +3,9 @@ import com.guseyn.broken_xml.HeadElement;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class XmlTestUtils {
+class XmlTestUtils {
 
-    public static void assertXmlHead(HeadElement head, String version) {
+    static void assertXmlHead(HeadElement head, String version) {
         List<Attribute> attributes = head.attributes();
         assertEquals(attributes.size(), 3);
         Attribute firstAttribute = attributes.get(0);
