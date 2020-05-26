@@ -483,8 +483,8 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
 You can use non-escaped brackets, but if open bracket `<` is followed by any valid name symbol:
 
 ```xml
-<elm2><><<sometext
-</elm2>
+<elm><><<sometext
+</elm>
 ```
 
 Then it will be parsed as part of new tag:
