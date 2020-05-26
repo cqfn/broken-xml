@@ -480,7 +480,7 @@ public class DifferentTypesOfOpeningAndClosingQuotesForAttributeValuesTest {
 <details>
   <summary><b>Open bracket is follwed by valid element name symbol</b></summary><br>
   
-You can use non-escaped brackets, but if open bracket `>` is followed by any valid name symbol:
+You can use non-escaped brackets, but if open bracket `<` is followed by any valid name symbol:
 
 ```xml
 <elm2><><<sometext
