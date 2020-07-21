@@ -4,7 +4,7 @@
 
   <groupId>com.guseyn.broken-xml</groupId>
   <artifactId>broken-xml</artifactId>
-  <version>1.0.13</version>
+  <version>1.0.14</version>
   <name>broken-xml</name>
   <url>https://github.com/Guseyn/broken-xml</url>
   <description>Broken XML is a parser that can parse any broken and invalid xml.</description>
