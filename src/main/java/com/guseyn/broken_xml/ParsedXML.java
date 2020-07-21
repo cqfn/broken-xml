@@ -323,7 +323,7 @@ public final class ParsedXML {
             }
 
             if (isQuote(currentChar)) {
-                if (!attributeValueIsInProcess) {
+                if (!attributeValueIsInProcess && currentAttributeName != null) {
                     attributeValueIsInProcess = true;
                     currentTypeOfOpeningQuote = currentChar;
                     currentAttributeValue = new StringBuilder();
@@ -353,7 +353,7 @@ public final class ParsedXML {
                     currentAttributeNameEnd = 0;
                     currentAttributeValueStart = 0;
                     currentAttributeValueEnd = 0;
-                } else {
+                } else if (currentAttributeValue != null) {
                     currentAttributeValue.append(currentChar);
                 }
                 continue;

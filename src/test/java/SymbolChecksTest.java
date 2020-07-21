@@ -266,7 +266,7 @@ class SymbolChecksTest {
     void testAttributeValueWithoutAttributeName() {
         final ParsedXML xml = new ParsedXML("<elm='value'>");
         XmlDocument document = xml.document();
-        assertEquals(document.roots().size(), 0);
+        assertEquals(document.roots().get(0).name(), "elmvalue");
     }
 
     @Test
