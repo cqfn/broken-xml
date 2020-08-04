@@ -1,0 +1,13 @@
+<report>
+  <infileset dir="${project.build.directory}/emma"
+             includes="*.es" />
+  <txt outfile="${project.build.directory}/emma/coverage.txt" />
+  <xml outfile="${project.build.directory}/emma/coverage.xml" />
+  <html outfile="${project.build.directory}/emma/coverage.html" />
+  <js outfile="${project.build.directory}/emma/coverage.js">
+    <functions outfile="${project.build.directory}/emma/functions.txt" />
+    <structures outfile="${project.build.directory}/emma/structures.txt" />
+    <namespaces outfile="${project.build.directory}/emma/namespaces.txt" />
+  </js>
+  <!-- Could also generate an HTML report, if you want... / -->
+</report>

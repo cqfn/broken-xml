@@ -12,6 +12,13 @@ class SymbolChecksTest {
     }
 
     @Test
+    void testJustOpeningAndClosingBracket() {
+        final ParsedXML xml = new ParsedXML("<>>");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 0);
+    }
+
+    @Test
     void testJustClosingBracket() {
         final ParsedXML xml = new ParsedXML(">");
         XmlDocument document = xml.document();
@@ -244,6 +251,28 @@ class SymbolChecksTest {
         assertEquals(document.roots().size(), 1);
         assertEquals(document.roots().get(0).name(), "elm");
         assertEquals(document.roots().get(0).texts().get(0).value(), "");
+    }
+
+    @Test
+    void testOneClosedElement() {
+        final ParsedXML xml = new ParsedXML("<elm/>");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 1);
+        assertEquals(document.roots().get(0).name(), "elm");
+    }
+
+    @Test
+    void testJustSlash() {
+        final ParsedXML xml = new ParsedXML("/");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 0);
+    }
+
+    @Test
+    void testJustSlashWithSymbol() {
+        final ParsedXML xml = new ParsedXML("/a");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 0);
     }
 
     @Test
