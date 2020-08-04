@@ -96,6 +96,10 @@ public final class ParsedXML {
                 continue;
             }
 
+            if (currentChar == '/' && i < inputLength - 1 && chars[i + 1] == '>') {
+                continue;
+            }
+
             if (currentChar == '?' && i < inputLength - 1 && chars[i + 1] == '>') {
                 if (headElementIsInProcess) {
                     currentHeadElementEnd = i + 1;
@@ -256,6 +260,25 @@ public final class ParsedXML {
                     if (attributesIsInProcess) {
                         attributesIsInProcess = false;
                         currentAttributes = new ArrayList<>();
+                    }
+                    if (chars[i - 1] == '/') {
+                        currentElement.correctEnd(i);
+                        if (currentParentElement != currentElement) {
+                            currentParentElement.children().add(currentElement);
+                        }
+                        processingElms.pop();
+                        if (processingElms.size() == 0) {
+                            document.roots().add(currentParentElement);
+                            currentParentElement = null;
+                        } else {
+                            currentElement = processingElms.get(processingElms.size() - 1);
+                            if (processingElms.size() > 1) {
+                                currentParentElement = processingElms.get(processingElms.size() - 2);
+                            }
+                        }
+                        closingElementNameIsInProcess = false;
+                        currentClosingElementName = null;
+                        continue;
                     }
                     continue;
                 }
