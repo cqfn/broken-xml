@@ -214,7 +214,7 @@ Includes the ossim feaure (this may be dead code)
           <!dependency-resolution>
           <optionalDependencies>ignore</optionalDependencies>
         </dependency-resolution>
-        <!--pomDependencies>consider</pomDependencies-->
+        <!--pomDependencies>consider</pomDependencies/>-->
         <environments>
           <environment>
             <os>win32</os>

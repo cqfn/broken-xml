@@ -14,7 +14,6 @@ public class RealTestForNullPointer extends XmlSource {
         );
         XmlDocument document = xml.document();
 
-        assertEquals(document.roots().size(), 4);
-        assertNull(document.roots().get(3));
+        assertEquals(document.roots().size(), 3);
     }
 }
