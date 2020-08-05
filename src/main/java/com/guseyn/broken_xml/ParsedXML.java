@@ -292,10 +292,12 @@ public final class ParsedXML {
                             ).end()
                         );
                     }
-                    if (currentParentElement != currentElement) {
+                    if (currentParentElement != null && currentParentElement != currentElement) {
                         currentParentElement.children().add(currentElement);
                     }
-                    processingElms.pop();
+                    if (processingElms.size() > 0) {
+                        processingElms.pop();
+                    }
                     if (processingElms.size() == 0) {
                         document.roots().add(currentParentElement);
                         currentParentElement = null;
