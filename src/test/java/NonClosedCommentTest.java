@@ -14,6 +14,6 @@ class NonClosedCommentTest extends XmlSource {
         XmlDocument document = xml.document();
         assertEquals(document.roots().size(), 1);
         assertEquals(document.comments().size(), 1);
-        assertEquals(document.comments().get(0).text(), "sfsef\n<elm>");
+        assertEquals(document.comments().get(0).text(), "sfsef\n</elm>");
     }
 }

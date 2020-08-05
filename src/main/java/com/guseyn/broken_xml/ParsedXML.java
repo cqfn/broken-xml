@@ -93,10 +93,17 @@ public final class ParsedXML {
             }
 
             if (currentChar == '/' && i > 0 && chars[i - 1] == '<') {
+                if (commentIsInProcess) {
+                    currentCommentText.append(currentChar);
+                }
                 continue;
             }
 
             if (currentChar == '/' && i < inputLength - 1 && chars[i + 1] == '>') {
+                if (commentIsInProcess) {
+                    currentCommentText.append(currentChar);
+                    continue;
+                }
                 continue;
             }
 
@@ -282,7 +289,7 @@ public final class ParsedXML {
                     }
                     continue;
                 }
-                if (closingElementNameIsInProcess && currentElement != null) {
+                if (closingElementNameIsInProcess && currentParentElement != null) {
                     if (currentElement.name().equals(currentClosingElementName.toString())) {
                         currentElement.correctEnd(i);
                     } else {
@@ -292,12 +299,10 @@ public final class ParsedXML {
                             ).end()
                         );
                     }
-                    if (currentParentElement != null && currentParentElement != currentElement) {
+                    if (currentParentElement != currentElement) {
                         currentParentElement.children().add(currentElement);
                     }
-                    if (processingElms.size() > 0) {
-                        processingElms.pop();
-                    }
+                    processingElms.pop();
                     if (processingElms.size() == 0) {
                         document.roots().add(currentParentElement);
                         currentParentElement = null;

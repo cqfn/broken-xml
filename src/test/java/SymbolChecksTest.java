@@ -262,6 +262,20 @@ class SymbolChecksTest {
     }
 
     @Test
+    void testOneClosedTagBracket() {
+        final ParsedXML xml = new ParsedXML("/>");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 0);
+    }
+
+    @Test
+    void testOneClosedTagBracketInComment() {
+        final ParsedXML xml = new ParsedXML("<!--/>-->");
+        XmlDocument document = xml.document();
+        assertEquals(document.roots().size(), 0);
+    }
+
+    @Test
     void testJustSlash() {
         final ParsedXML xml = new ParsedXML("/");
         XmlDocument document = xml.document();
