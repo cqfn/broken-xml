@@ -293,11 +293,13 @@ public final class ParsedXML {
                     if (currentElement.name().equals(currentClosingElementName.toString())) {
                         currentElement.correctEnd(i);
                     } else {
-                        currentElement.correctEnd(
-                            currentElement.texts().get(
-                                currentElement.texts().size() - 1
-                            ).end()
-                        );
+                        if (currentElement.texts().size() != 0) {
+                            currentElement.correctEnd(
+                                currentElement.texts().get(
+                                    currentElement.texts().size() - 1
+                                ).end()
+                            );
+                        }
                     }
                     if (currentParentElement != currentElement) {
                         currentParentElement.children().add(currentElement);
