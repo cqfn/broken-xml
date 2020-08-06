@@ -399,11 +399,13 @@ public final class ParsedXML {
                     currentAttributeName.append(currentChar);
                     continue;
                 }
-                if (attributeNameIsInProcess) {
+                if (attributeNameIsInProcess && currentAttributeName != null) {
                     currentAttributeName.append(currentChar);
                     continue;
                 }
-                currentAttributeValue.append(currentChar);
+                if (currentAttributeValue != null) {
+                    currentAttributeValue.append(currentChar);
+                }
                 continue;
             }
 
