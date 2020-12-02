@@ -1,5 +1,3 @@
-# Broken XML
-
 <img src="https://raw.githubusercontent.com/Guseyn/logos/master/broken-xml.svg?sanitize=true">
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.guseyn.broken-xml/broken-xml.svg)](https://maven-badges.herokuapp.com/maven-central/com.guseyn.broken-xml/broken-xml)
