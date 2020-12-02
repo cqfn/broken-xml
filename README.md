@@ -1,13 +1,11 @@
-# Broken XML
-
 <img src="https://raw.githubusercontent.com/Guseyn/logos/master/broken-xml.svg?sanitize=true">
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.guseyn.broken-xml/broken-xml.svg)](https://maven-badges.herokuapp.com/maven-central/com.guseyn.broken-xml/broken-xml)
-[![Build Status](https://travis-ci.com/cqfn/broken-xml.svg?branch=master)](https://travis-ci.com/Guseyn/broken-xml)
-[![codecov](https://codecov.io/gh/cqfn/broken-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/Guseyn/broken-xml)
+[![Build Status](https://travis-ci.com/cqfn/broken-xml.svg?branch=master)](https://travis-ci.com/cqfn/broken-xml)
+[![codecov](https://codecov.io/gh/cqfn/broken-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/cqfn/broken-xml)
 
 **Broken XML** is a parser that can parse any broken and invalid XML. This parser should not be used
-by any normal human being. But if you're lucky like myself, just read further...
+by any normal human being (who can use [these parsers](https://www.tutorialspoint.com/java_xml/java_xml_parsers.htm)). But if you're lucky like myself, just read further...
 
 ## Add via Maven
 
@@ -25,7 +23,7 @@ by any normal human being. But if you're lucky like myself, just read further...
 mvn clean package -Plocal
 ```
 
-Jar file is `/target/broken-xml-<version>.jar`.
+Jar file is `target/broken-xml-<version>.jar`.
 
 Or you can just install last version of jar file in the [**releases**](https://github.com/Guseyn/broken-xml/releases) section.
 
